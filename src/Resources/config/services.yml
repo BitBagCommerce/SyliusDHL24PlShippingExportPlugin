@@ -1,0 +1,13 @@
+parameters:
+    bitbag.dhl_wsdl: https://dhl24.com.pl
+
+services:
+    bitbag.dhl_shipping_export_plugin.form.type.dhl_shipping_gateway:
+        class: BitBag\DhlShippingExportPlugin\Form\Type\DhlShippingGatewayType
+        tags:
+            - { name: bitbag.shipping_gateway_configuration_type, type: "dhl", label: "DHL" }
+
+    bitbag.dhl_shipping_export_plugin.event_listener.dhl_shipping_export:
+        class: BitBag\ShippingExportPlugin\EventListener\DhlShippingExportEventListener
+        tags:
+            - { name: kernel.event_listener, event: 'bitbag.export_shipment', method: exportShipment }
