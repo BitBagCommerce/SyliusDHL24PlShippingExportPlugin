@@ -18,7 +18,7 @@ final class AppKernel extends Kernel
             new \Sylius\Bundle\AdminApiBundle\SyliusAdminApiBundle(),
 
             new BitBag\ShippingExportPlugin\ShippingExportPlugin(),
-            new BitBag\DhlShippingExportPlugin\DhlShippingExportPlugin(),
+            new BitBag\Dhl24ShippingExportPlugin\Dhl24ShippingExportPlugin(),
         ]);
     }
 

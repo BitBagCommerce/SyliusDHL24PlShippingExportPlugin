@@ -8,12 +8,13 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace spec\BitBag\DhlShippingExportPlugin\Api;
+namespace spec\BitBag\Dhl24ShippingExportPlugin\Api;
 
-use BitBag\DhlShippingExportPlugin\Api\DhlWebClient;
+use BitBag\Dhl24ShippingExportPlugin\Api\DhlWebClient;
 use BitBag\ShippingExportPlugin\Entity\ShippingGatewayInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ShipmentInterface;
+use spec\BitBag\Dhl24ShippingExportPlugin\Mock\DhlWebClientRequestMock;
 
 /**
  * @author Mikołaj Król <mikolaj.krol@bitbag.pl>

@@ -8,7 +8,7 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace BitBag\DhlShippingExportPlugin\Form\Type;
+namespace BitBag\Dhl24ShippingExportPlugin\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -26,11 +26,17 @@ final class DhlShippingGatewayType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('wsdl', TextType::class, [
+                'label' => 'bitbag.ui.dhl_wsdl',
+            ])
             ->add('login', TextType::class, [
                 'label' => 'bitbag.ui.dhl_login',
             ])
             ->add('password', TextType::class, [
                 'label' => 'bitbag.ui.dhl_password',
+            ])
+            ->add('billing_account_number', TextType::class, [
+                'label' => 'bitbag.ui.billing_account_number', //SAP
             ])
             ->add('shipping_payment_type', ChoiceType::class, [
                 'label' => 'bitbag.ui.shipping_payment_type',
@@ -117,6 +123,13 @@ final class DhlShippingGatewayType extends AbstractType
             ])
             ->add('package_length', TextType::class, [
                 'label' => 'bitbag.ui.package_length',
+            ])
+            ->add('collect_on_delivery_form', ChoiceType::class, [
+                'label' => 'bitbag.ui.collect_on_deliveryForm',
+                'choices' => [
+                    'bitbag.ui.cod_cash' => 'CASH',
+                    'bitbag.ui.cod_bank_transfer' => 'BANK_TRANSFER',
+                ],
             ])
         ;
     }

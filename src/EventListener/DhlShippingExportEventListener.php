@@ -8,9 +8,9 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace BitBag\DhlShippingExportPlugin\EventListener;
+namespace BitBag\Dhl24ShippingExportPlugin\EventListener;
 
-use BitBag\DhlShippingExportPlugin\Api\DhlWebClient;
+use BitBag\Dhl24ShippingExportPlugin\Api\DhlWebClient;
 use BitBag\ShippingExportPlugin\Event\ExportShipmentEvent;
 
 /**

@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\BitBag\DhlShippingExportPlugin\EventListener;
+namespace spec\BitBag\Dhl24ShippingExportPlugin\EventListener;
 
-use BitBag\DhlShippingExportPlugin\EventListener\DhlShippingExportEventListener;
+use BitBag\Dhl24ShippingExportPlugin\EventListener\DhlShippingExportEventListener;
 use PhpSpec\ObjectBehavior;
 
 /**

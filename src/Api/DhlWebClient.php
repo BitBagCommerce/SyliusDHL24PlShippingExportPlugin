@@ -8,7 +8,7 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace BitBag\DhlShippingExportPlugin\Api;
+namespace BitBag\Dhl24ShippingExportPlugin\Api;
 
 use BitBag\ShippingExportPlugin\Entity\ShippingGatewayInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -21,6 +21,8 @@ use Sylius\Component\Core\Model\ShipmentInterface;
  */
 final class DhlWebClient extends \SoapClient
 {
+    const DATE_FORMAT = 'yyyy-mm-dd';
+
     /**
      * @var ShippingGatewayInterface
      */
@@ -94,7 +96,7 @@ final class DhlWebClient extends \SoapClient
      */
     private function getShipmentInfo()
     {
-        return [
+        $shipmentInfo = [
             'dropOffType' => $this->getShippingGatewayConfig('drop_off_type'),
             'serviceType' => $this->getShippingGatewayConfig('service_type'),
             'labelType' => $this->getShippingGatewayConfig('label_type'),
@@ -104,11 +106,15 @@ final class DhlWebClient extends \SoapClient
                 'paymentType' => $this->getShippingGatewayConfig('payment_type'),
             ],
             'shipmentTime' => [
-                'shipmentDate' => $this->resolveShipmentDate(),
+                'shipmentDate' => $this->resolvePickupDate(),
                 'shipmentStartHour' => $this->getShippingGatewayConfig('shipping_start_hour'),
                 'shipmentEndHour' => $this->getShippingGatewayConfig('shipping_end_hour'),
             ],
         ];
+
+        if (true === $this->isCashOnDelivery()) {
+            $shipmentInfo['specialServices'] = $this->resolveSpecialServices();
+        }
     }
 
     /**
@@ -120,9 +126,9 @@ final class DhlWebClient extends \SoapClient
             'item' => [
                 'type' => $this->getShippingGatewayConfig('package_type'),
                 'weight' => $this->shipment->getShippingWeight(),
-                'width' => $this->calculateOrderWidth(),
-                'height' => $this->calculateOrderHeight(),
-                'length' => $this->calculateOrderLength(),
+                'width' => $this->getShippingGatewayConfig('package_width'),
+                'height' => $this->getShippingGatewayConfig('package_height'),
+                'length' => $this->getShippingGatewayConfig('package_length'),
                 'quantity' => 1,
             ],
         ];
@@ -170,39 +176,47 @@ final class DhlWebClient extends \SoapClient
     }
 
     /**
-     * @return string
+     * @return boolean
      */
-    private function resolveShippingPaymentType()
+    private function isCashOnDelivery()
     {
+        $codPaymentMethodCode = $this->getShippingGatewayConfig('cod_payment_method_code');
+        $payments = $this->order->getPayments();
+
+        foreach ($payments as $payment) {
+            return $payment->getMethod()->getCode() === $codPaymentMethodCode;
+        }
+
+        return false;
     }
 
     /**
      * @return string
      */
-    private function resolveShipmentDate()
+    private function resolvePickupDate()
     {
+        $now = new \DateTime();
+        $breakingHour = $this->getShippingGatewayConfig('pickup_breaking_hour');
+
+        if (null !== $breakingHour && $now->format('H') >= (int)$breakingHour) {
+            $tomorrow = $now->modify("+1 day");
+
+            return $tomorrow->format(self::DATE_FORMAT);
+        }
+
+        return $now->format(self::DATE_FORMAT);
     }
 
     /**
-     * @return int
+     * @return array
      */
-    private function calculateOrderWidth()
+    private function resolveSpecialServices()
     {
-    }
+        $collectOnDeliveryValue = number_format($this->order->getTotal(), 2, '.', '');
 
-    /**
-     * @return int
-     */
-    private function calculateOrderHeight()
-    {
-
-    }
-
-    /**
-     * @return int
-     */
-    private function calculateOrderLength()
-    {
-
+        return [
+            ['serviceType' => 'COD', 'serviceValue' => $collectOnDeliveryValue],
+            'collectOnDeliveryForm' => $this->getShippingGatewayConfig('collect_on_delivery_form'),
+        ];
     }
 }

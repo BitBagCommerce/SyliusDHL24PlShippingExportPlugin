@@ -38,8 +38,8 @@
     },
     "autoload": {
         "psr-4": {
-            "BitBag\\DhlShippingExportPlugin\\": "src/",
-            "Tests\\BitBag\\DhlShippingExportPlugin\\": "tests/"
+            "BitBag\\Dhl24ShippingExportPlugin\\": "src/",
+            "Tests\\BitBag\\Dhl24ShippingExportPlugin\\": "tests/"
         }
     },
     "minimum-stability": "dev"
