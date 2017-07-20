@@ -1,7 +1,7 @@
 {
-    "name": "sylius/dhl-shipping-export-plugin",
+    "name": "bitbag/dhl24-pl-shipping-export-plugin",
     "type": "sylius-plugin",
-    "description": "DHL shipping export plugin for Sylius based applications.",
+    "description": "DHL24 PL shipping export plugin for Sylius based applications.",
     "license": "MIT",
     "authors": [
         {
@@ -16,7 +16,7 @@
     "require": {
         "php": "^5.6|^7.0",
         "sylius/sylius": "^1.0.0@beta",
-        "symfony/symfony": "3.2.8",
+        "symfony/symfony": "3.2.*",
         "bitbag/shipping-export-plugin": "dev-master"
     },
     "require-dev": {
