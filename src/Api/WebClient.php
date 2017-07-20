@@ -8,20 +8,22 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace BitBag\Dhl24ShippingExportPlugin\Api;
+namespace BitBag\Dhl24PlShippingExportPlugin\Api;
 
 use BitBag\ShippingExportPlugin\Entity\ShippingGatewayInterface;
+use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\ShipmentInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Mikołaj Król <mikolaj.krol@bitbag.pl>
  * @author Damian Murawski <damian.murawski@bitbag.pl>
  */
-final class DhlWebClient extends \SoapClient
+final class WebClient
 {
-    const DATE_FORMAT = 'yyyy-mm-dd';
+    const DATE_FORMAT = 'Y-m-d';
 
     /**
      * @var ShippingGatewayInterface
@@ -39,6 +41,11 @@ final class DhlWebClient extends \SoapClient
     private $order;
 
     /**
+     * @var \SoapClient|object
+     */
+    private $soapClient;
+
+    /**
      * @param ShippingGatewayInterface $shippingGateway
      * @param ShipmentInterface $shipment
      */
@@ -47,6 +54,8 @@ final class DhlWebClient extends \SoapClient
         $this->shippingGateway = $shippingGateway;
         $this->shipment = $shipment;
         $this->order = $shipment->getOrder();
+
+        $this->soapClient = new \SoapClient($this->getShippingGatewayConfig('wsdl'));
     }
 
     public function createShipmentCall()
@@ -61,8 +70,12 @@ final class DhlWebClient extends \SoapClient
             ]
         ];
 
-        /** @var object $this */
-        $this->createShipment($requestData);
+        return $this->soapClient->createShipment($requestData);
+    }
+
+    public function getSoapClient()
+    {
+        return $this->soapClient;
     }
 
     /**
@@ -71,7 +84,7 @@ final class DhlWebClient extends \SoapClient
     private function getAuthData()
     {
         return [
-            'username' => $this->shippingGateway->getConfigValue('login'),
+            'username' => strtoupper($this->shippingGateway->getConfigValue('login')),
             'password' => $this->shippingGateway->getConfigValue('password'),
         ];
     }
@@ -101,20 +114,22 @@ final class DhlWebClient extends \SoapClient
             'serviceType' => $this->getShippingGatewayConfig('service_type'),
             'labelType' => $this->getShippingGatewayConfig('label_type'),
             'billing' => [
-                'shippingPaymentType' => $this->resolveShippingPaymentType(),
+                'shippingPaymentType' => $this->getShippingGatewayConfig('shipping_payment_type'),
                 'billingAccountNumber' => $this->getShippingGatewayConfig('billing_account_number'),
                 'paymentType' => $this->getShippingGatewayConfig('payment_type'),
             ],
             'shipmentTime' => [
                 'shipmentDate' => $this->resolvePickupDate(),
-                'shipmentStartHour' => $this->getShippingGatewayConfig('shipping_start_hour'),
-                'shipmentEndHour' => $this->getShippingGatewayConfig('shipping_end_hour'),
+                'shipmentStartHour' => $this->getShippingGatewayConfig('shipment_start_hour'),
+                'shipmentEndHour' => $this->getShippingGatewayConfig('shipment_end_hour'),
             ],
         ];
 
         if (true === $this->isCashOnDelivery()) {
             $shipmentInfo['specialServices'] = $this->resolveSpecialServices();
         }
+
+        return $shipmentInfo;
     }
 
     /**
@@ -122,8 +137,11 @@ final class DhlWebClient extends \SoapClient
      */
     private function getPieceList()
     {
+        $weight = $this->shipment->getShippingWeight();
+        Assert::greaterThan($weight, 0, sprintf("Shipment weight must be greater than %d.", 0));
+
         return [
-            'item' => [
+            [
                 'type' => $this->getShippingGatewayConfig('package_type'),
                 'weight' => $this->shipment->getShippingWeight(),
                 'width' => $this->getShippingGatewayConfig('package_width'),
@@ -144,35 +162,48 @@ final class DhlWebClient extends \SoapClient
         return [
             'shipper' => [
                 'address' => [
-                    'country' => $this->getShippingGatewayConfig('country'),
+                    'country' => 'PL',
                     'name' => $this->getShippingGatewayConfig('name'),
-                    'postalCode' => $this->getShippingGatewayConfig('postal_code'),
+                    'postalCode' => str_replace('-', '', $this->getShippingGatewayConfig('postal_code')),
                     'city' => $this->getShippingGatewayConfig('city'),
                     'street' => $this->getShippingGatewayConfig('street'),
                     'houseNumber' => $this->getShippingGatewayConfig('house_number'),
                     'phoneNumber' => $this->getShippingGatewayConfig('phone_number'),
-                ]
+                ],
             ],
             'receiver' => [
                 'address' => [
-                    'country' => strtoupper($shippingAddress->getCountryCode()),
+                    'country' => 'PL',
                     'name' => $shippingAddress->getFullName(),
-                    'postalCode' => $shippingAddress->getPostcode(),
+                    'postalCode' => str_replace('-', '', $shippingAddress->getPostcode()),
+                    'houseNumber' => $this->resolveHouseNumber($shippingAddress),
                     'city' => $shippingAddress->getCity(),
                     'street' => $shippingAddress->getCity(),
-                ]
+                    'phoneNumber' => $shippingAddress->getPhoneNumber(),
+                ],
             ]
         ];
     }
 
     /**
-     * @param $config
+     * @param AddressInterface $address
      *
      * @return string
      */
-    private function getShippingGatewayConfig($config)
+    private function resolveHouseNumber(AddressInterface $address)
     {
-        return $this->shippingGateway->getConfigValue($config);
+        $street = $address->getStreet();
+
+        $streetParts = explode(" ", $street);
+
+        Assert::greaterThan(count($streetParts), 0, sprintf(
+            "Street \"%s\" is invalid. The street format must be something like %s, where %d is the house number.",
+            $street,
+            "\"Opolska 45\"",
+            45
+        ));
+
+        return end($streetParts);
     }
 
     /**
@@ -218,5 +249,15 @@ final class DhlWebClient extends \SoapClient
             ['serviceType' => 'COD', 'serviceValue' => $collectOnDeliveryValue],
             'collectOnDeliveryForm' => $this->getShippingGatewayConfig('collect_on_delivery_form'),
         ];
+    }
+
+    /**
+     * @param $config
+     *
+     * @return string
+     */
+    private function getShippingGatewayConfig($config)
+    {
+        return $this->shippingGateway->getConfigValue($config);
     }
 }

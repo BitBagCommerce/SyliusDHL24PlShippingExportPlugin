@@ -8,7 +8,7 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace BitBag\Dhl24ShippingExportPlugin\DependencyInjection;
+namespace BitBag\Dhl24PlShippingExportPlugin\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 /**
  * @author Mikołaj Król <mikolaj.krol@bitbag.pl>
  */
-final class DhlShippingExportExtension extends Extension
+final class Dhl24PlShippingExportExtension extends Extension
 {
     /**
      * {@inheritdoc}

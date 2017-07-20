@@ -3,11 +3,11 @@ parameters:
 
 services:
     bitbag.dhl_shipping_export_plugin.form.type.dhl_shipping_gateway:
-        class: BitBag\Dhl24ShippingExportPlugin\Form\Type\DhlShippingGatewayType
+        class: BitBag\Dhl24PlShippingExportPlugin\Form\Type\ShippingGatewayType
         tags:
-            - { name: bitbag.shipping_gateway_configuration_type, type: "dhl24", label: "DHL24" }
+            - { name: bitbag.shipping_gateway_configuration_type, type: "dhl24_pl", label: "DHL24 PL" }
 
     bitbag.dhl_shipping_export_plugin.event_listener.dhl_shipping_export:
-        class: BitBag\Dhl24ShippingExportPlugin\EventListener\DhlShippingExportEventListener
+        class: BitBag\Dhl24PlShippingExportPlugin\EventListener\ShippingExportEventListener
         tags:
             - { name: kernel.event_listener, event: 'bitbag.export_shipment', method: exportShipment }

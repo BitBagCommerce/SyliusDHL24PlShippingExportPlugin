@@ -8,7 +8,7 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace BitBag\Dhl24ShippingExportPlugin;
+namespace BitBag\Dhl24PlShippingExportPlugin;
 
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * @author Mikołaj Król <mikolaj.krol@bitbag.pl>
  */
-final class Dhl24ShippingExportPlugin extends Bundle
+final class Dhl24PlShippingExportPlugin extends Bundle
 {
     use SyliusPluginTrait;
 }

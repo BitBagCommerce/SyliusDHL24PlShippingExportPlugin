@@ -1,2 +1,2 @@
 suites:
-    DhlShippingExport: { namespace: BitBag\Dhl24ShippingExportPlugin, psr4_prefix: BitBag\Dhl24ShippingExportPlugin, spec_path: src, src_path: src }
+    DhlShippingExport: { namespace: BitBag\Dhl24PlShippingExportPlugin, psr4_prefix: BitBag\Dhl24PlShippingExportPlugin, spec_path: src, src_path: src }

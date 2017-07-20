@@ -8,7 +8,7 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace BitBag\Dhl24ShippingExportPlugin\Form\Type;
+namespace BitBag\Dhl24PlShippingExportPlugin\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * @author Mikołaj Król <mikolaj.krol@bitbag.pl>
  */
-final class DhlShippingGatewayType extends AbstractType
+final class ShippingGatewayType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -101,7 +101,7 @@ final class DhlShippingGatewayType extends AbstractType
                     'bitbag.ui.zblp' => 'ZBLP',
                 ],
             ])
-            ->add('type', ChoiceType::class, [
+            ->add('package_type', ChoiceType::class, [
                 'label' => 'bitbag.ui.type',
                 'choices' => [
                     'bitbag.ui.package' => 'PACKAGE',
@@ -115,6 +115,9 @@ final class DhlShippingGatewayType extends AbstractType
             ->add('shipment_end_hour', TextType::class, [
                 'label' => 'bitbag.ui.shipment_end_hour',
             ])
+            ->add('pickup_breaking_hour', TextType::class, [
+                'label' => 'bitbag.ui.pickup_breaking_hour',
+            ])
             ->add('package_width', TextType::class, [
                 'label' => 'bitbag.ui.package_width',
             ])
@@ -123,6 +126,9 @@ final class DhlShippingGatewayType extends AbstractType
             ])
             ->add('package_length', TextType::class, [
                 'label' => 'bitbag.ui.package_length',
+            ])
+            ->add('cod_payment_method_code', TextType::class, [
+                'label' => 'bitbag.ui.cod_payment_method_code',
             ])
             ->add('collect_on_delivery_form', ChoiceType::class, [
                 'label' => 'bitbag.ui.collect_on_deliveryForm',

@@ -18,7 +18,7 @@ final class AppKernel extends Kernel
             new \Sylius\Bundle\AdminApiBundle\SyliusAdminApiBundle(),
 
             new BitBag\ShippingExportPlugin\ShippingExportPlugin(),
-            new BitBag\Dhl24ShippingExportPlugin\Dhl24ShippingExportPlugin(),
+            new BitBag\Dhl24PlShippingExportPlugin\Dhl24PlShippingExportPlugin(),
         ]);
     }
 
@@ -27,6 +27,6 @@ final class AppKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load($this->getRootDir() . '/config/config.yml');
+        $loader->load($this->getRootDir() . '/config/ceonfig.yml');
     }
 }

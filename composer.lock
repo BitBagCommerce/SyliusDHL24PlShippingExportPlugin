@@ -52,12 +52,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bitbag-commerce/shipping-export-plugin.git",
-                "reference": "6c5d1272a6c084b15637abc893c323db7683c5f1"
+                "reference": "c6a4d367187fb4ea5ceec0d0e4b5e49eecdd9465"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bitbag-commerce/shipping-export-plugin/zipball/6c5d1272a6c084b15637abc893c323db7683c5f1",
-                "reference": "6c5d1272a6c084b15637abc893c323db7683c5f1",
+                "url": "https://api.github.com/repos/bitbag-commerce/shipping-export-plugin/zipball/c6a4d367187fb4ea5ceec0d0e4b5e49eecdd9465",
+                "reference": "c6a4d367187fb4ea5ceec0d0e4b5e49eecdd9465",
                 "shasum": ""
             },
             "require": {
@@ -104,7 +104,7 @@
                 }
             ],
             "description": "Shipping data export environment for Sylius platform applications",
-            "time": "2017-07-16 09:12:13"
+            "time": "2017-07-17 16:15:37"
         },
         {
             "name": "clue/stream-filter",
