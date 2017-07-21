@@ -61,13 +61,12 @@ final class ShippingExportEventListener
             return;
         }
 
+        $labelContent = base64_decode($response->createShipmentResult->label->labelContent);
         $extension = self::BASE_LABEL_EXTENSION;
 
         if ($response->createShipmentResult->label->labelType === 'ZBLP') {
             $extension = 'zpl';
         }
-
-        $labelContent = base64_decode($response->createShipmentResult->label->labelContent);
 
         $exportShipmentEvent->saveShippingLabel($labelContent, $extension);
         $exportShipmentEvent->addSuccessFlash();

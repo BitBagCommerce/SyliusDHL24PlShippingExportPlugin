@@ -51,6 +51,9 @@ final class WebClient implements WebClientInterface
         $this->shipment = $shipment;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function createShipment()
     {
         /** @var object $soapClient */
@@ -63,7 +66,7 @@ final class WebClient implements WebClientInterface
                 'shipmentInfo' => $this->getShipmentInfo(),
                 'pieceList' => $this->getPieceList(),
                 'ship' => $this->getShip(),
-            ]
+            ],
         ];
 
         return $soapClient->createShipment($requestData);
@@ -83,7 +86,7 @@ final class WebClient implements WebClientInterface
     private function getAuthData()
     {
         return [
-            'username' => strtoupper($this->shippingGateway->getConfigValue('login')),
+            'username' => $this->shippingGateway->getConfigValue('login'),
             'password' => $this->shippingGateway->getConfigValue('password'),
         ];
     }
@@ -230,10 +233,32 @@ final class WebClient implements WebClientInterface
         if (null !== $breakingHour && $now->format('H') >= (int)$breakingHour) {
             $tomorrow = $now->modify("+1 day");
 
-            return $tomorrow->format(self::DATE_FORMAT);
+            return $this->resolveWeekend($tomorrow)->format(self::DATE_FORMAT);
         }
 
-        return $now->format(self::DATE_FORMAT);
+        return $this->resolveWeekend($now)->format(self::DATE_FORMAT);
+    }
+
+    /**
+     * @param \DateTime $date
+     *
+     * @return \DateTime
+     */
+    private function resolveWeekend(\DateTime $date)
+    {
+        $dayOfWeek = (int)$date->format('N');
+
+        if ($dayOfWeek === 6) {
+
+            return $date->modify("+2 days");
+        }
+
+        if ($dayOfWeek === 7) {
+
+            return $date->modify("+1 day");
+        }
+
+        return $date;
     }
 
     /**
