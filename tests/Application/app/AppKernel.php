@@ -1,8 +1,19 @@
 <?php
 
+/**
+ * This file was created by the developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * another great project.
+ * You can find more information about us on https://bitbag.shop and write us
+ * an email on kontakt@bitbag.pl.
+ */
+
 use Sylius\Bundle\CoreBundle\Application\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
+/**
+ * @author Mikołaj Król <mikolaj.krol@bitbag.pl>
+ */
 final class AppKernel extends Kernel
 {
     /**
@@ -14,7 +25,7 @@ final class AppKernel extends Kernel
             new \Sylius\Bundle\AdminBundle\SyliusAdminBundle(),
             new \Sylius\Bundle\ShopBundle\SyliusShopBundle(),
 
-            new \FOS\OAuthServerBundle\FOSOAuthServerBundle(), // Required by SyliusApiBundle
+            new \FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new \Sylius\Bundle\AdminApiBundle\SyliusAdminApiBundle(),
 
             new BitBag\ShippingExportPlugin\ShippingExportPlugin(),
@@ -27,6 +38,6 @@ final class AppKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load($this->getRootDir() . '/config/ceonfig.yml');
+        $loader->load($this->getRootDir() . '/config/config.yml');
     }
 }

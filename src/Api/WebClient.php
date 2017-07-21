@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
  * @author Mikołaj Król <mikolaj.krol@bitbag.pl>
  * @author Damian Murawski <damian.murawski@bitbag.pl>
  */
-final class WebClient
+final class WebClient implements WebClientInterface
 {
     const DATE_FORMAT = 'Y-m-d';
 
@@ -36,30 +36,26 @@ final class WebClient
     private $shipment;
 
     /**
-     * @var OrderInterface
+     * {@inheritdoc}
      */
-    private $order;
-
-    /**
-     * @var \SoapClient|object
-     */
-    private $soapClient;
-
-    /**
-     * @param ShippingGatewayInterface $shippingGateway
-     * @param ShipmentInterface $shipment
-     */
-    public function __construct(ShippingGatewayInterface $shippingGateway, ShipmentInterface $shipment)
+    public function setShippingGateway(ShippingGatewayInterface $shippingGateway)
     {
         $this->shippingGateway = $shippingGateway;
-        $this->shipment = $shipment;
-        $this->order = $shipment->getOrder();
-
-        $this->soapClient = new \SoapClient($this->getShippingGatewayConfig('wsdl'));
     }
 
-    public function createShipmentCall()
+    /**
+     * {@inheritdoc}
+     */
+    public function setShipment(ShipmentInterface $shipment)
     {
+        $this->shipment = $shipment;
+    }
+
+    public function createShipment()
+    {
+        /** @var object $soapClient */
+        $soapClient = new \SoapClient($this->getShippingGatewayConfig('wsdl'));
+
         $requestData = [
             'authData' => $this->getAuthData(),
             'shipment' => [
@@ -70,12 +66,15 @@ final class WebClient
             ]
         ];
 
-        return $this->soapClient->createShipment($requestData);
+        return $soapClient->createShipment($requestData);
     }
 
-    public function getSoapClient()
+    /**
+     * @return OrderInterface|\Sylius\Component\Order\Model\OrderInterface
+     */
+    private function getOrder()
     {
-        return $this->soapClient;
+        return $this->shipment->getOrder();
     }
 
     /**
@@ -96,7 +95,7 @@ final class WebClient
     {
         $content = "";
         /** @var OrderItemInterface $item */
-        foreach ($this->order->getItems() as $item) {
+        foreach ($this->getOrder()->getItems() as $item) {
             $content .= $item->getProduct()->getName() . ", ";
         }
         $content = rtrim($content, ", ");
@@ -157,7 +156,7 @@ final class WebClient
      */
     private function getShip()
     {
-        $shippingAddress = $this->order->getShippingAddress();
+        $shippingAddress = $this->getOrder()->getShippingAddress();
 
         return [
             'shipper' => [
@@ -193,7 +192,6 @@ final class WebClient
     private function resolveHouseNumber(AddressInterface $address)
     {
         $street = $address->getStreet();
-
         $streetParts = explode(" ", $street);
 
         Assert::greaterThan(count($streetParts), 0, sprintf(
@@ -212,7 +210,7 @@ final class WebClient
     private function isCashOnDelivery()
     {
         $codPaymentMethodCode = $this->getShippingGatewayConfig('cod_payment_method_code');
-        $payments = $this->order->getPayments();
+        $payments = $this->getOrder()->getPayments();
 
         foreach ($payments as $payment) {
             return $payment->getMethod()->getCode() === $codPaymentMethodCode;
@@ -243,7 +241,7 @@ final class WebClient
      */
     private function resolveSpecialServices()
     {
-        $collectOnDeliveryValue = number_format($this->order->getTotal(), 2, '.', '');
+        $collectOnDeliveryValue = number_format($this->getOrder()->getTotal(), 2, '.', '');
 
         return [
             ['serviceType' => 'COD', 'serviceValue' => $collectOnDeliveryValue],

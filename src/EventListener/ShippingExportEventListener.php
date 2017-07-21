@@ -10,7 +10,7 @@
 
 namespace BitBag\Dhl24PlShippingExportPlugin\EventListener;
 
-use BitBag\Dhl24PlShippingExportPlugin\Api\WebClient;
+use BitBag\Dhl24PlShippingExportPlugin\Api\WebClientInterface;
 use BitBag\ShippingExportPlugin\Event\ExportShipmentEvent;
 
 /**
@@ -20,6 +20,19 @@ final class ShippingExportEventListener
 {
     const DHL_GATEWAY_CODE = 'dhl24_pl';
     const BASE_LABEL_EXTENSION = 'pdf';
+
+    /**
+     * @var WebClientInterface
+     */
+    private $webClient;
+
+    /**
+     * @param WebClientInterface $webClient
+     */
+    public function __construct(WebClientInterface $webClient)
+    {
+        $this->webClient = $webClient;
+    }
 
     /**
      * @param ExportShipmentEvent $exportShipmentEvent
@@ -34,10 +47,11 @@ final class ShippingExportEventListener
         }
 
         $shipment = $shippingExport->getShipment();
-        $dhlClient = new WebClient($shippingGateway, $shipment);
+        $this->webClient->setShippingGateway($shippingGateway);
+        $this->webClient->setShipment($shipment);
 
         try {
-            $response = $dhlClient->createShipmentCall();
+            $response = $this->webClient->createShipment();
         } catch (\Exception $exception) {
             $exportShipmentEvent->addErrorFlash(sprintf(
                 "DHL24 Web Service for #%s order: %s",
@@ -49,7 +63,7 @@ final class ShippingExportEventListener
 
         $extension = self::BASE_LABEL_EXTENSION;
 
-        if ($response->createShipmentResult->label->labelType == 'ZBLP') {
+        if ($response->createShipmentResult->label->labelType === 'ZBLP') {
             $extension = 'zpl';
         }
 
