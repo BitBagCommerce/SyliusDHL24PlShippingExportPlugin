@@ -10,6 +10,7 @@
 
 namespace BitBag\Dhl24PlShippingExportPlugin\EventListener;
 
+use BitBag\Dhl24PlShippingExportPlugin\Api\SoapClientInterface;
 use BitBag\Dhl24PlShippingExportPlugin\Api\WebClientInterface;
 use BitBag\ShippingExportPlugin\Event\ExportShipmentEvent;
 
@@ -26,12 +27,16 @@ final class ShippingExportEventListener
      */
     private $webClient;
 
+    private $soapClient;
+
     /**
      * @param WebClientInterface $webClient
+     * @param SoapClientInterface $soapClient
      */
-    public function __construct(WebClientInterface $webClient)
+    public function __construct(WebClientInterface $webClient, SoapClientInterface $soapClient)
     {
         $this->webClient = $webClient;
+        $this->soapClient = $soapClient;
     }
 
     /**
@@ -51,7 +56,9 @@ final class ShippingExportEventListener
         $this->webClient->setShipment($shipment);
 
         try {
-            $response = $this->webClient->createShipment();
+            $requestData = $this->webClient->getRequestData();
+
+            $response = $this->soapClient->createShipment($requestData, $shippingGateway->getConfigValue('wsdl'));
         } catch (\Exception $exception) {
             $exportShipmentEvent->addErrorFlash(sprintf(
                 "DHL24 Web Service for #%s order: %s",

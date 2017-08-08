@@ -1,0 +1,20 @@
+imports:
+    - "vendor/sylius/sylius/behat.yml.dist"
+    - "tests/Behat/Resources/suites.yml"
+
+default:
+    extensions:
+        FriendsOfBehat\ContextServiceExtension:
+            imports:
+                - "vendor/sylius/sylius/src/Sylius/Behat/Resources/config/services.xml"
+                - "vendor/bitbag/shipping-export-plugin/tests/Behat/Resources/contexts.yml"
+                - "vendor/bitbag/shipping-export-plugin/tests/Behat/Resources/pages.yml"
+                - "tests/Behat/Resources/contexts.yml"
+                - "tests/Behat/Resources/pages.yml"
+                - "tests/Behat/Resources/mocker.yml"
+
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                class: AppKernel
+                path: tests/Application/app/AppKernel.php
+                bootstrap: tests/Application/app/autoload.php

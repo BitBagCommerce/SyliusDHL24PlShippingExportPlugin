@@ -32,5 +32,8 @@ interface WebClientInterface
      */
     public function setShipment(ShipmentInterface $shipment);
 
-    public function createShipment();
+    /**
+     * @return array
+     */
+    public function getRequestData();
 }

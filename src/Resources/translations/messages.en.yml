@@ -1,0 +1,51 @@
+bitbag:
+    ui:
+        dhl_wsdl: WSDL
+        dhl_login: Username
+        dhl_password: Password
+        billing_account_number: Client number
+        shipping_payment_type: Determine the payment page
+        country: Country
+        name: Name (first and last name or company name)
+        postal_code: Postal Code
+        city: City
+        street: Street
+        house_number: House number
+        phone_number: Phone number
+        drop_off_type: Type of request
+        service_type: Type of transport service
+        label_type: Choosing a return label
+        type: Type of package
+        shipment_start_hour: Shipment start hour
+        shipment_end_hour: Shipment end hour
+        pickup_breaking_hour: Pickup breaking hour
+        package_width: Package width
+        package_height: Package height
+        package_length: Package length
+        cod_payment_method_code: COD payment method code
+        collect_on_deliveryForm: Form of download return in COD service
+        request_courier: Create a shipment and order the courier
+        courier_only: Order courier
+        regular_pickup: Creating a shipment without restriction
+        AH: Domestic shipment
+        domestic_09: Service Domestic 09
+        domestic_12: Service Domestic 12
+        EK: Shipment Connect
+        PI: Shipment International
+        lp: Waybill
+        blp: BLP label in PDF format
+        lblp: Etykieta BLP w formacie PDF A4
+        zblp: BLP label in Zebra printers format
+        package: Pack
+        envelope: Envelope shipment
+        pallet: Palette
+        cod_cash: Cash payment
+        cod_bank_transfer: Bank transfer
+dhl:
+    ui:
+        payment_type: Payment method
+        shipper: Sender
+        receiver: Recipient
+        user: Third party
+        bank_transfer: Bank transfer
+        cash: Cash payment

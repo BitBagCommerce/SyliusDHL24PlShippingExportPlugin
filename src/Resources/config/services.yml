@@ -11,8 +11,12 @@ services:
         class: BitBag\Dhl24PlShippingExportPlugin\EventListener\ShippingExportEventListener
         arguments:
             - '@bitbag.dhl24_pl_shipping_export_plugin.api.web_client'
+            - '@bitbag.dhl24_pl_shipping_export_plugin.api.soap_client'
         tags:
             - { name: kernel.event_listener, event: 'bitbag.export_shipment', method: exportShipment }
 
     bitbag.dhl24_pl_shipping_export_plugin.api.web_client:
         class: BitBag\Dhl24PlShippingExportPlugin\Api\WebClient
+
+    bitbag.dhl24_pl_shipping_export_plugin.api.soap_client:
+        class: BitBag\Dhl24PlShippingExportPlugin\Api\SoapClient

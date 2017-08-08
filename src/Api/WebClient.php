@@ -54,12 +54,9 @@ final class WebClient implements WebClientInterface
     /**
      * {@inheritdoc}
      */
-    public function createShipment()
+    public function getRequestData()
     {
-        /** @var object $soapClient */
-        $soapClient = new \SoapClient($this->getShippingGatewayConfig('wsdl'));
-
-        $requestData = [
+        return [
             'authData' => $this->getAuthData(),
             'shipment' => [
                 'content' => $this->getContent(),
@@ -68,8 +65,6 @@ final class WebClient implements WebClientInterface
                 'ship' => $this->getShip(),
             ],
         ];
-
-        return $soapClient->createShipment($requestData);
     }
 
     /**
@@ -97,13 +92,22 @@ final class WebClient implements WebClientInterface
     private function getContent()
     {
         $content = "";
+
         /** @var OrderItemInterface $item */
         foreach ($this->getOrder()->getItems() as $item) {
-            $content .= $item->getProduct()->getName() . ", ";
+
+            $mainTaxon = $item->getProduct()->getMainTaxon();
+
+            if ($mainTaxon !== null) {
+                if (stristr($content, $mainTaxon->getName()) === false) {
+                    $content .= $mainTaxon->getName() . ", ";
+                }
+            }
         }
+
         $content = rtrim($content, ", ");
 
-        return $content;
+        return substr($content, 0, 30);
     }
 
     /**
@@ -180,7 +184,7 @@ final class WebClient implements WebClientInterface
                     'postalCode' => str_replace('-', '', $shippingAddress->getPostcode()),
                     'houseNumber' => $this->resolveHouseNumber($shippingAddress),
                     'city' => $shippingAddress->getCity(),
-                    'street' => $shippingAddress->getCity(),
+                    'street' => $shippingAddress->getStreet(),
                     'phoneNumber' => $shippingAddress->getPhoneNumber(),
                 ],
             ]

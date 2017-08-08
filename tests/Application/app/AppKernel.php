@@ -10,6 +10,7 @@
 
 use Sylius\Bundle\CoreBundle\Application\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer;
 
 /**
  * @author Mikołaj Król <mikolaj.krol@bitbag.pl>
@@ -39,5 +40,17 @@ final class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load($this->getRootDir() . '/config/config.yml');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getContainerBaseClass()
+    {
+        if ('test' === $this->environment) {
+            return MockerContainer::class;
+        }
+
+        return parent::getContainerBaseClass();
     }
 }
