@@ -1,34 +1,39 @@
-# Sylius Plugin Skeleton [![License](https://img.shields.io/packagist/l/sylius/plugin-skeleton.svg)](https://packagist.org/packages/sylius/plugin-skeleton) [![Version](https://img.shields.io/packagist/v/sylius/plugin-skeleton.svg)](https://packagist.org/packages/sylius/plugin-skeleton) [![Build status on Linux](https://img.shields.io/travis/Sylius/PluginSkeleton/master.svg)](http://travis-ci.org/Sylius/PluginSkeleton) [![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/Sylius/eSkeleton.svg)](https://scrutinizer-ci.com/g/Sylius/PluginSkeleton/)
+![BitBag](https://bitbag.pl/static/bitbag-logo.png)
 
-## Usage
+## Overview
 
-1. Run `composer create-project sylius/plugin-skeleton -s dev ProjectName`.
+This plugin was made on top of our ShippingExport abstraction layer and it's goal is to allow DHL24PL Shipments to be exported to external web API in Sylius platform based apps.
 
-## Testing & Development
-
-In order to run tests, execute following commands:
+## Installation
 
 ```bash
-$ composer install
-$ cd tests/Application
-$ yarn install
-$ yarn run gulp
-$ bin/console doctrine:database:create --env test
-$ bin/console doctrine:schema:create --env test
-$ vendor/bin/behat
-$ vendor/bin/phpunit
-$ vendor/bin/phpspec
+$ composer require bitbag/dhl24-pl-shipping-export-plugin
+
+```
+    
+Add plugin dependencies to your AppKernel.php file:
+
+```php
+public function registerBundles()
+{
+    return array_merge(parent::registerBundles(), [
+        ...
+        
+        new BitBag\Dhl24ShippingExportPlugin\Dhl24ShippingExportPlugin(),
+    ]);
+}
 ```
 
-In order to open test app in your browser, do the following:
+## Testing
 
 ```bash
-$ composer install
-$ cd tests/Application
+$ wget http://getcomposer.org/composer.phar
+$ php composer.phar install
 $ yarn install
 $ yarn run gulp
-$ bin/console doctrine:database:create --env test
-$ bin/console doctrine:schema:create --env test
-$ bin/console server:start --env test
-$ open http://127.0.0.1:8000/
+$ php bin/console sylius:install --env test
+$ php bin/console server:start --env test
+$ open http://localhost:8000
+$ bin/behat features/*
+$ bin/phpspec run
 ```
