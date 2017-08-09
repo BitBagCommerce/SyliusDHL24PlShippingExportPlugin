@@ -2,7 +2,7 @@
 
 ## Overview
 
-This plugin was made on top of our ShippingExport abstraction layer and it's goal is to allow DHL24PL Shipments to be exported to external web API in Sylius platform based apps.
+This plugin was made on top of our ShippingExport abstraction layer and it's goal is to allow DHL24PL Shipments to be exported to external web API in Sylius platform based apps. Each time new shipment for configured DHL gateway is placed you will see new shipment in the shipping export tab.
 
 ## Installation
 
