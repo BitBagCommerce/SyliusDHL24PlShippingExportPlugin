@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8cb5b68cc5b23fbc93a92f511f17890c",
+    "content-hash": "fd20ef5c7d7dc642932fabb5feeac980",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -52,12 +52,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bitbag-commerce/shipping-export-plugin.git",
-                "reference": "c6a4d367187fb4ea5ceec0d0e4b5e49eecdd9465"
+                "reference": "64c3c6c22dc0d59e89c5e23fceeff3fe229d3c1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bitbag-commerce/shipping-export-plugin/zipball/c6a4d367187fb4ea5ceec0d0e4b5e49eecdd9465",
-                "reference": "c6a4d367187fb4ea5ceec0d0e4b5e49eecdd9465",
+                "url": "https://api.github.com/repos/bitbag-commerce/shipping-export-plugin/zipball/64c3c6c22dc0d59e89c5e23fceeff3fe229d3c1c",
+                "reference": "64c3c6c22dc0d59e89c5e23fceeff3fe229d3c1c",
                 "shasum": ""
             },
             "require": {
@@ -104,7 +104,7 @@
                 }
             ],
             "description": "Shipping data export environment for Sylius platform applications",
-            "time": "2017-07-17 16:15:37"
+            "time": "2017-07-19 21:44:30"
         },
         {
             "name": "clue/stream-filter",
@@ -5629,7 +5629,7 @@
             ],
             "authors": [
                 {
-                    "name": "William Durand",
+                    "name": "William DURAND",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -6771,7 +6771,7 @@
                 {
                     "name": "Anthon Pang",
                     "email": "apang@softwaredevelopment.ca",
-                    "role": "Fork maintainer"
+                    "role": "Fork Maintainer"
                 }
             ],
             "description": "PHP WebDriver for Selenium 2",
