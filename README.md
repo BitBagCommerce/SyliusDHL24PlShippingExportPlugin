@@ -37,3 +37,6 @@ $ open http://localhost:8000
 $ bin/behat features/*
 $ bin/phpspec run
 ```
+## Contribution
+
+Learn more about our contribution workflow on http://docs.sylius.org/en/latest/contributing/
