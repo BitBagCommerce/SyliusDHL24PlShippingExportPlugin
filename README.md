@@ -19,7 +19,7 @@ public function registerBundles()
     return array_merge(parent::registerBundles(), [
         ...
         
-        new BitBag\Dhl24ShippingExportPlugin\Dhl24ShippingExportPlugin(),
+        new BitBag\Dhl24PlShippingExportPlugin\Dhl24PlShippingExportPlugin(),
     ]);
 }
 ```
