@@ -40,6 +40,7 @@ Feature: Managing shipping gateway
         And those orders were placed with "DHL Express" shipping method
         And set product weight to "10"
         And set units to the shipment
+
     @ui
     Scenario: Seeing shipments to export
         When I go to the shipping export page
