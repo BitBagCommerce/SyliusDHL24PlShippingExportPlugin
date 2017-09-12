@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b656ff99051da436cd026ca6094f981b",
+    "content-hash": "a84d7b5fb45eb9c70dd73247f52baf2b",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -4942,12 +4942,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Sylius/Sylius.git",
-                "reference": "163c99e9585579df89329e78359a98fd4311170d"
+                "reference": "243be3d8c50d1609cfbb8693036647b3d69cb773"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Sylius/Sylius/zipball/163c99e9585579df89329e78359a98fd4311170d",
-                "reference": "163c99e9585579df89329e78359a98fd4311170d",
+                "url": "https://api.github.com/repos/Sylius/Sylius/zipball/243be3d8c50d1609cfbb8693036647b3d69cb773",
+                "reference": "243be3d8c50d1609cfbb8693036647b3d69cb773",
                 "shasum": ""
             },
             "require": {
@@ -5063,7 +5063,8 @@
                 "phpspec/phpspec": "^4.0",
                 "phpunit/phpunit": "^5.6",
                 "se/selenium-server-standalone": "^2.52",
-                "stripe/stripe-php": "^4.1"
+                "stripe/stripe-php": "^4.1",
+                "symplify/easy-coding-standard": "^2.3"
             },
             "suggest": {
                 "ext-iconv": "For better performance than using Symfony Polyfill Component",
@@ -5115,7 +5116,7 @@
             ],
             "description": "E-Commerce platform for PHP, based on Symfony framework.",
             "homepage": "http://sylius.org",
-            "time": "2017-09-12 14:15:11"
+            "time": "2017-09-12 19:37:42"
         },
         {
             "name": "symfony/monolog-bundle",
