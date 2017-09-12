@@ -13,6 +13,7 @@ namespace spec\BitBag\Dhl24PlShippingExportPlugin\Api;
 use BitBag\Dhl24PlShippingExportPlugin\Api\WebClient;
 use BitBag\Dhl24PlShippingExportPlugin\Api\WebClientInterface;
 use BitBag\ShippingExportPlugin\Entity\ShippingGatewayInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -89,8 +90,8 @@ final class WebClientSpec extends ObjectBehavior
         $address->getPhoneNumber()->willReturn(123456789);
 
         $order->getShippingAddress()->willReturn($address);
-        $order->getItems()->willReturn([$orderItem]);
-        $order->getPayments()->willReturn([$payment]);
+        $order->getItems()->willReturn(new ArrayCollection([$orderItem->getWrappedObject()]));
+        $order->getPayments()->willReturn(new ArrayCollection([$payment->getWrappedObject()]));
         $order->getTotal()->willReturn(77000);
 
         $shipment->getOrder()->willReturn($order);
