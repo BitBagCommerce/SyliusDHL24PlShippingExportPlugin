@@ -6,7 +6,8 @@ This plugin was made on top of our ShippingExport abstraction layer and it's goa
 
 ## Support
 
-Do you want us to customize this plugin for your specific needs? Write us an email on mikolaj.krol@bitbag.pl 💻
+We work on amazing eCommerce projects on top of Sylius and Pimcore. Need some help or additional resources for a project?
+Write us an email on mikolaj.krol@bitbag.pl or visit [our website](https://bitbag.shop/)! :rocket:
 
 ## Installation
 
