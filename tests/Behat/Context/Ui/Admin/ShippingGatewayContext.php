@@ -15,7 +15,7 @@ use Sylius\Behat\NotificationType;
 use Sylius\Behat\Page\SymfonyPageInterface;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Resolver\CurrentPageResolverInterface;
-use Tests\BitBag\ShippingExportPlugin\Behat\Behaviour\ContainsError;
+use Tests\BitBag\SyliusShippingExportPlugin\Behat\Behaviour\ContainsError;
 use Tests\BitBag\Dhl24PlShippingExportPlugin\Behat\Page\Admin\ShippingGateway\CreatePageInterface;
 use Webmozart\Assert\Assert;
 
