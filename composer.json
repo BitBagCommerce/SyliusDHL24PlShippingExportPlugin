@@ -41,5 +41,8 @@
             "Tests\\BitBag\\Dhl24PlShippingExportPlugin\\": "tests/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "config": {
+        "bin-dir": "bin"
+    }
 }
