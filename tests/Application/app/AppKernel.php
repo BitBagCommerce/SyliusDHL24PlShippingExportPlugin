@@ -31,7 +31,7 @@ final class AppKernel extends Kernel
             new \FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new \Sylius\Bundle\AdminApiBundle\SyliusAdminApiBundle(),
 
-            new BitBag\SyliusShippingExportPlugin\BitbagSyliusShippingExportPlugin(),
+            new BitBag\SyliusShippingExportPlugin\BitBagSyliusShippingExportPlugin(),
             new BitBag\Dhl24PlShippingExportPlugin\Dhl24PlShippingExportPlugin(),
         ]);
     }
