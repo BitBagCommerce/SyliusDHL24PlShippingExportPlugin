@@ -11,7 +11,7 @@
 namespace Tests\BitBag\Dhl24PlShippingExportPlugin\Behat\Page\Admin\ShippingGateway;
 
 use Sylius\Behat\Page\Admin\Crud\CreatePage as BaseCreatePage;
-use Tests\BitBag\ShippingExportPlugin\Behat\Behaviour\ContainsError;
+use Tests\BitBag\SyliusShippingExportPlugin\Behat\Behaviour\ContainsError;
 
 /**
  * @author Patryk Drapik <patryk.drapik@bitbag.pl>

@@ -13,9 +13,9 @@ namespace spec\BitBag\Dhl24PlShippingExportPlugin\EventListener;
 use BitBag\Dhl24PlShippingExportPlugin\Api\SoapClientInterface;
 use BitBag\Dhl24PlShippingExportPlugin\Api\WebClientInterface;
 use BitBag\Dhl24PlShippingExportPlugin\EventListener\ShippingExportEventListener;
-use BitBag\ShippingExportPlugin\Entity\ShippingExportInterface;
-use BitBag\ShippingExportPlugin\Entity\ShippingGatewayInterface;
-use BitBag\ShippingExportPlugin\Event\ExportShipmentEvent;
+use BitBag\SyliusShippingExportPlugin\Entity\ShippingExportInterface;
+use BitBag\SyliusShippingExportPlugin\Entity\ShippingGatewayInterface;
+use BitBag\SyliusShippingExportPlugin\Event\ExportShipmentEvent;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\Order;
 use Sylius\Component\Core\Model\ShipmentInterface;
@@ -58,9 +58,8 @@ final class ShippingExportEventListenerSpec extends ObjectBehavior
         $shippingExport->getShipment()->willReturn($shipment);
 
         $exportShipmentEvent->getShippingExport()->willReturn($shippingExport);
-        $exportShipmentEvent->addErrorFlash()->willReturn();
-        $exportShipmentEvent->addSuccessFlash()->willReturn();
-        $exportShipmentEvent->exportShipment()->willReturn();
+        $exportShipmentEvent->addSuccessFlash()->shouldBeCalled();
+        $exportShipmentEvent->exportShipment()->shouldBeCalled();
         $exportShipmentEvent->saveShippingLabel('', 'pdf')->shouldBeCalled();
         $shippingExport->getShippingGateway()->willReturn($shippingGateway);
 

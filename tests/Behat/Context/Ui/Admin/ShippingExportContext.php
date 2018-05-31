@@ -12,7 +12,7 @@ namespace Tests\BitBag\Dhl24PlShippingExportPlugin\Behat\Context\Ui\Admin;
 
 use Behat\Behat\Context\Context;
 use Tests\BitBag\Dhl24PlShippingExportPlugin\Behat\Mocker\DHLApiMocker;
-use Tests\BitBag\ShippingExportPlugin\Behat\Page\Admin\ShippingExport\IndexPageInterface;
+use Tests\BitBag\SyliusShippingExportPlugin\Behat\Page\Admin\ShippingExport\IndexPageInterface;
 
 /**
  * @author Patryk Drapik <patryk.drapik@bitbag.pl>

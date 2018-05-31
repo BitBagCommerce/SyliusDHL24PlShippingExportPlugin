@@ -12,7 +12,7 @@ namespace spec\BitBag\Dhl24PlShippingExportPlugin\Api;
 
 use BitBag\Dhl24PlShippingExportPlugin\Api\WebClient;
 use BitBag\Dhl24PlShippingExportPlugin\Api\WebClientInterface;
-use BitBag\ShippingExportPlugin\Entity\ShippingGatewayInterface;
+use BitBag\SyliusShippingExportPlugin\Entity\ShippingGatewayInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\AddressInterface;

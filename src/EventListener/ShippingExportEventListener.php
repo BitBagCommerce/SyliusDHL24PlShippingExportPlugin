@@ -12,7 +12,7 @@ namespace BitBag\Dhl24PlShippingExportPlugin\EventListener;
 
 use BitBag\Dhl24PlShippingExportPlugin\Api\SoapClientInterface;
 use BitBag\Dhl24PlShippingExportPlugin\Api\WebClientInterface;
-use BitBag\ShippingExportPlugin\Event\ExportShipmentEvent;
+use BitBag\SyliusShippingExportPlugin\Event\ExportShipmentEvent;
 
 /**
  * @author Mikołaj Król <mikolaj.krol@bitbag.pl>

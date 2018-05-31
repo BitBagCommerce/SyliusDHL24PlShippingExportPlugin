@@ -9,7 +9,7 @@ imports:
     - { resource: "@SyliusShopBundle/Resources/config/app/config.yml" }
     - { resource: "@SyliusAdminApiBundle/Resources/config/app/config.yml" }
 
-    - { resource: "@ShippingExportPlugin/Resources/config/config.yml" }
+    - { resource: "@BitBagSyliusShippingExportPlugin/Resources/config/config.yml" }
     - { resource: "@Dhl24PlShippingExportPlugin/Resources/config/services.yml" }
 
     - { resource: "../../../../vendor/sylius/sylius/app/config/security.yml" }
