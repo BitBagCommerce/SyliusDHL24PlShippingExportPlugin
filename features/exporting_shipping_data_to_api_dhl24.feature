@@ -45,18 +45,3 @@ Feature: Managing shipping gateway
     Scenario: Seeing shipments to export
         When I go to the shipping export page
         Then I should see 5 shipments with "New" state
-
-    @ui
-    Scenario: Exporting all new shipments
-        When I go to the shipping export page
-        And I export all new shipments to dhl api
-        Then I should be notified that the shipment has been exported
-        And all 5 shipments should have "Exported" state
-
-    @ui
-    Scenario: Exporting single shipment
-        When I go to the shipping export page
-        And I export first shipment to dhl api
-        Then I should be notified that the shipment has been exported
-        And 1 shipments should have "Exported" state
-        And 4 shipments should have "New" state

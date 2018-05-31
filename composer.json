@@ -16,7 +16,7 @@
     "require": {
         "php": "^7.1",
         "sylius/sylius": "^1.0.0-rc.2",
-        "bitbag/shipping-export-plugin": "dev-master"
+        "bitbag/shipping-export-plugin": "^1.2"
     },
     "require-dev": {
         "phpspec/phpspec": "^3.2",
@@ -41,7 +41,6 @@
             "Tests\\BitBag\\Dhl24PlShippingExportPlugin\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
     "config": {
         "bin-dir": "bin"
     }

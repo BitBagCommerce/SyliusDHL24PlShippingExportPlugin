@@ -58,9 +58,8 @@ final class ShippingExportEventListenerSpec extends ObjectBehavior
         $shippingExport->getShipment()->willReturn($shipment);
 
         $exportShipmentEvent->getShippingExport()->willReturn($shippingExport);
-        $exportShipmentEvent->addErrorFlash()->willReturn();
-        $exportShipmentEvent->addSuccessFlash()->willReturn();
-        $exportShipmentEvent->exportShipment()->willReturn();
+        $exportShipmentEvent->addSuccessFlash()->shouldBeCalled();
+        $exportShipmentEvent->exportShipment()->shouldBeCalled();
         $exportShipmentEvent->saveShippingLabel('', 'pdf')->shouldBeCalled();
         $shippingExport->getShippingGateway()->willReturn($shippingGateway);
 
