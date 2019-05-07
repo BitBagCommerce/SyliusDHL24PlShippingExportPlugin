@@ -4,10 +4,10 @@
     </a>
     <br />
     <a href="https://packagist.org/packages/bitbag/dhl24-pl-shipping-export-plugin" title="License" target="_blank">
-        <img src="https://img.shields.io/packagist/l/bitbag/dhl24-pl-shipping-export-plugin" />
+        <img src="https://img.shields.io/packagist/l/bitbag/dhl24-pl-shipping-export-plugin.svg" />
     </a>
     <a href="https://packagist.org/packages/bitbag/dhl24-pl-shipping-export-plugin" title="Version" target="_blank">
-        <img src="https://img.shields.io/packagist/v/bitbag/dhl24-pl-shipping-export-plugin" />
+        <img src="https://img.shields.io/packagist/v/bitbag/dhl24-pl-shipping-export-plugin.svg" />
     </a>
     <a href="http://travis-ci.org/BitBagCommerce/SyliusDHL24PlShippingExportPlugin" title="Build status" target="_blank">
             <img src="https://img.shields.io/travis/BitBagCommerce/SyliusDHL24PlShippingExportPlugin/master.svg" />
@@ -16,7 +16,7 @@
         <img src="https://img.shields.io/scrutinizer/g/BitBagCommerce/SyliusDHL24PlShippingExportPlugin.svg" />
     </a>
     <a href="https://packagist.org/packages/bitbag/dhl24-pl-shipping-export-plugin" title="Total Downloads" target="_blank">
-        <img src="https://poser.pugx.org/bitbag/dhl24-pl-shipping-export-plugin" />
+        <img src="https://poser.pugx.org/bitbag/dhl24-pl-shipping-export-plugin.svg" />
     </a>
     <p>
         <img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="85">
