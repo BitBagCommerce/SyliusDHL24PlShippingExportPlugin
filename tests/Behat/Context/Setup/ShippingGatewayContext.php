@@ -1,12 +1,14 @@
 <?php
 
-/**
+/*
  * This file was created by the developers from BitBag.
  * Feel free to contact us once you face any issues or want to start
  * another great project.
  * You can find more information about us on https://bitbag.shop and write us
- * an email on kontakt@bitbag.pl.
- */
+ * an email on mikolaj.krol@bitbag.pl.
+*/
+
+declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusDhl24PlShippingExportPlugin\Behat\Context\Setup;
 
@@ -22,53 +24,30 @@ use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
-/**
- * @author Patryk Drapik <patryk.drapik@bitbag.pl>
- */
 final class ShippingGatewayContext implements Context
 {
-    /**
-     * @var ProductVariantResolverInterface
-     */
+    /** @var ProductVariantResolverInterface */
     private $defaultVariantResolver;
 
-    /**
-     * @var RepositoryInterface
-     */
+    /** @var RepositoryInterface */
     private $orderRepository;
 
-    /**
-     * @var RepositoryInterface
-     */
+    /** @var RepositoryInterface */
     private $shipmentRepository;
 
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var EntityManagerInterface */
     private $entityManager;
 
-    /**
-     * @var SharedStorageInterface
-     */
+    /** @var SharedStorageInterface */
     private $sharedStorage;
 
-
-    /**
-     * @param ProductVariantResolverInterface $productVariantResolver
-     * @param RepositoryInterface $orderRepository
-     * @param RepositoryInterface $shipmentRepository
-     * @param EntityManagerInterface $entityManager
-     * @param SharedStorageInterface $sharedStorage
-     * @internal param ObjectManager $objectManager
-     */
     public function __construct(
         ProductVariantResolverInterface $productVariantResolver,
         RepositoryInterface $orderRepository,
         RepositoryInterface $shipmentRepository,
         EntityManagerInterface $entityManager,
         SharedStorageInterface $sharedStorage
-    )
-    {
+    ) {
         $this->defaultVariantResolver = $productVariantResolver;
         $this->shipmentRepository = $shipmentRepository;
         $this->orderRepository = $orderRepository;
@@ -76,11 +55,10 @@ final class ShippingGatewayContext implements Context
         $this->sharedStorage = $sharedStorage;
     }
 
-
     /**
      * @Given /^the customer set the shipping address ("[^"]+" addressed it to "[^"]+", "[^"]+" "[^"]+" in the "[^"]+"(?:|, "[^"]+")) to orders$/
      */
-    public function theCustomerSetTheAddressAddressedItToInTheToOrders(AddressInterface $address)
+    public function theCustomerSetTheAddressAddressedItToInTheToOrders(AddressInterface $address): void
     {
         $orders = $this->orderRepository->findAll();
 
@@ -93,7 +71,7 @@ final class ShippingGatewayContext implements Context
     /**
      * @Given set product weight to :weight
      */
-    public function setProductWeightTo($weight)
+    public function setProductWeightTo(float $weight): void
     {
         /** @var ProductInterface $product */
         $product = $this->sharedStorage->get('product');
@@ -109,13 +87,12 @@ final class ShippingGatewayContext implements Context
     /**
      * @Given set units to the shipment
      */
-    public function setUnitsToTheShipment()
+    public function setUnitsToTheShipment(): void
     {
         $shipments = $this->shipmentRepository->findAll();
 
         /** @var ShipmentInterface $shipment */
         foreach ($shipments as $shipment) {
-
             /** @var OrderItemInterface $orderItem */
             foreach ($shipment->getOrder()->getItems() as $orderItem) {
                 foreach ($orderItem->getUnits() as $itemUnit) {

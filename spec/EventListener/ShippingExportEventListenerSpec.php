@@ -1,12 +1,14 @@
 <?php
 
-/**
+/*
  * This file was created by the developers from BitBag.
  * Feel free to contact us once you face any issues or want to start
  * another great project.
  * You can find more information about us on https://bitbag.shop and write us
- * an email on kontakt@bitbag.pl.
- */
+ * an email on mikolaj.krol@bitbag.pl.
+*/
+
+declare(strict_types=1);
 
 namespace spec\BitBag\SyliusDhl24PlShippingExportPlugin\EventListener;
 
@@ -20,23 +22,19 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\Order;
 use Sylius\Component\Core\Model\ShipmentInterface;
 
-/**
- * @author Patryk Drapik <patryk.drapik@bitbag.pl>
- */
 final class ShippingExportEventListenerSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    function it_is_initializable(): void
     {
         $this->shouldHaveType(ShippingExportEventListener::class);
     }
 
-    function let(WebClientInterface $webClient, SoapClientInterface $soapClient)
+    function let(WebClientInterface $webClient, SoapClientInterface $soapClient): void
     {
         $this->beConstructedWith($webClient, $soapClient);
     }
 
-    function it_export_shipment
-    (
+    function it_export_shipment(
         ExportShipmentEvent $exportShipmentEvent,
         ShippingExportInterface $shippingExport,
         ShippingGatewayInterface $shippingGateway,
@@ -44,8 +42,7 @@ final class ShippingExportEventListenerSpec extends ObjectBehavior
         WebClientInterface $webClient,
         SoapClientInterface $soapClient,
         Order $order
-    )
-    {
+    ): void {
         $webClient->setShippingGateway($shippingGateway);
 
         $shippingGateway->getCode()->willReturn(ShippingExportEventListener::DHL_GATEWAY_CODE);
@@ -67,13 +64,11 @@ final class ShippingExportEventListenerSpec extends ObjectBehavior
         $shipment->getOrder()->willReturn($order);
 
         $soapClient->createShipment([], 'wsdl')->willReturn(
-            (object)['createShipmentResult' =>
-                (object)['label' =>
-                    (object)[
+            (object) ['createShipmentResult' => (object) ['label' => (object) [
                         'labelContent' => '',
-                        'labelType' => 't'
-                    ]
-                ]
+                        'labelType' => 't',
+                    ],
+                ],
             ]
         );
 

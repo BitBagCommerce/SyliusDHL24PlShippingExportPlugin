@@ -1,53 +1,40 @@
 <?php
 
-/**
+/*
  * This file was created by the developers from BitBag.
  * Feel free to contact us once you face any issues or want to start
  * another great project.
  * You can find more information about us on https://bitbag.shop and write us
- * an email on kontakt@bitbag.pl.
- */
+ * an email on mikolaj.krol@bitbag.pl.
+*/
+
+declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusDhl24PlShippingExportPlugin\Behat\Page\Admin\ShippingGateway;
 
 use Sylius\Behat\Page\Admin\Crud\CreatePage as BaseCreatePage;
 use Tests\BitBag\SyliusShippingExportPlugin\Behat\Behaviour\ContainsError;
 
-/**
- * @author Patryk Drapik <patryk.drapik@bitbag.pl>
- */
 final class CreatePage extends BaseCreatePage implements CreatePageInterface
 {
     use ContainsError;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function selectShippingMethod($name)
+    public function selectShippingMethod($name): void
     {
-        $this->getDocument()->selectFieldOption("Shipping method", $name);
+        $this->getDocument()->selectFieldOption('Shipping method', $name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function selectFieldOption($field, $option)
+    public function selectFieldOption($field, $option): void
     {
         $this->getDocument()->selectFieldOption($field, $option);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function fillField($field, $value)
+    public function fillField($field, $value): void
     {
         $this->getDocument()->fillField($field, $value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function submit()
+    public function submit(): void
     {
         $this->create();
     }

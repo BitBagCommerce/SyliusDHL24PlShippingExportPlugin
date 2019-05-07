@@ -1,55 +1,42 @@
 <?php
 
-/**
+/*
  * This file was created by the developers from BitBag.
  * Feel free to contact us once you face any issues or want to start
  * another great project.
  * You can find more information about us on https://bitbag.shop and write us
- * an email on kontakt@bitbag.pl.
- */
+ * an email on mikolaj.krol@bitbag.pl.
+*/
+
+declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusDhl24PlShippingExportPlugin\Behat\Context\Ui\Admin;
 
 use Behat\Behat\Context\Context;
+use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
 use Sylius\Behat\NotificationType;
-use Sylius\Behat\Page\SymfonyPageInterface;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Resolver\CurrentPageResolverInterface;
-use Tests\BitBag\SyliusShippingExportPlugin\Behat\Behaviour\ContainsError;
 use Tests\BitBag\SyliusDhl24PlShippingExportPlugin\Behat\Page\Admin\ShippingGateway\CreatePageInterface;
+use Tests\BitBag\SyliusShippingExportPlugin\Behat\Behaviour\ContainsError;
 use Webmozart\Assert\Assert;
 
-/**
- * @author Patryk Drapik <patryk.drapik@bitbag.pl>
- */
 final class ShippingGatewayContext implements Context
 {
-    /**
-     * @var CreatePageInterface|ContainsError
-     */
+    /** @var CreatePageInterface|ContainsError */
     private $createPage;
 
-    /**
-     * @var CurrentPageResolverInterface
-     */
+    /** @var CurrentPageResolverInterface */
     private $currentPageResolver;
 
-    /**
-     * @var NotificationCheckerInterface
-     */
+    /** @var NotificationCheckerInterface */
     private $notificationChecker;
 
-    /**
-     * @param CreatePageInterface $createPage
-     * @param CurrentPageResolverInterface $currentPageResolver
-     * @param NotificationCheckerInterface $notificationChecker
-     */
     public function __construct(
         CreatePageInterface $createPage,
         CurrentPageResolverInterface $currentPageResolver,
         NotificationCheckerInterface $notificationChecker
-    )
-    {
+    ) {
         $this->createPage = $createPage;
         $this->currentPageResolver = $currentPageResolver;
         $this->notificationChecker = $notificationChecker;
@@ -58,7 +45,7 @@ final class ShippingGatewayContext implements Context
     /**
      * @When I visit the create shipping gateway configuration page for :code
      */
-    public function iVisitTheCreateShippingGatewayConfigurationPage($code)
+    public function iVisitTheCreateShippingGatewayConfigurationPage(string $code): void
     {
         $this->createPage->open(['code' => $code]);
     }
@@ -66,7 +53,7 @@ final class ShippingGatewayContext implements Context
     /**
      * @When I select the :name shipping method
      */
-    public function iSelectTheShippingMethod($name)
+    public function iSelectTheShippingMethod(string $name): void
     {
         $this->resolveCurrentPage()->selectShippingMethod($name);
     }
@@ -74,7 +61,7 @@ final class ShippingGatewayContext implements Context
     /**
      * @When I fill the :field field with :value
      */
-    public function iFillTheFieldWith($field, $value)
+    public function iFillTheFieldWith(string $field, string $value): void
     {
         $this->resolveCurrentPage()->fillField($field, $value);
     }
@@ -82,16 +69,16 @@ final class ShippingGatewayContext implements Context
     /**
      * @When I clear the :field field
      */
-    public function iClearTheField($field)
+    public function iClearTheField(string $field): void
     {
-        $this->resolveCurrentPage()->fillField($field, "");
+        $this->resolveCurrentPage()->fillField($field, '');
     }
 
     /**
      * @When I add it
      * @When I save it
      */
-    public function iTryToAddIt()
+    public function iTryToAddIt(): void
     {
         $this->resolveCurrentPage()->submit();
     }
@@ -100,10 +87,10 @@ final class ShippingGatewayContext implements Context
      * @Then I should be notified that the shipping gateway has been created
      * @Then I should be notified that the shipping gateway has been updated
      */
-    public function iShouldBeNotifiedThatTheShippingGatewayWasCreated()
+    public function iShouldBeNotifiedThatTheShippingGatewayWasCreated(): void
     {
         $this->notificationChecker->checkNotification(
-            "Shipping gateway has been successfully",
+            'Shipping gateway has been successfully',
             NotificationType::success()
         );
     }
@@ -111,7 +98,7 @@ final class ShippingGatewayContext implements Context
     /**
      * @Then :message error message should be displayed
      */
-    public function errorMessageForFieldShouldBeDisplayed($message)
+    public function errorMessageForFieldShouldBeDisplayed(string $message): void
     {
         Assert::true($this->resolveCurrentPage()->hasError($message));
     }
@@ -119,7 +106,7 @@ final class ShippingGatewayContext implements Context
     /**
      * @When I fill the :field select option with :option
      */
-    public function iFillTheSelectOptionWith($filed, $option)
+    public function iFillTheSelectOptionWith(string $filed, string $option): void
     {
         $this->resolveCurrentPage()->selectFieldOption($filed, $option);
     }
@@ -127,7 +114,7 @@ final class ShippingGatewayContext implements Context
     /**
      * @return CreatePageInterface|ContainsError|SymfonyPageInterface
      */
-    private function resolveCurrentPage()
+    private function resolveCurrentPage(): SymfonyPageInterface
     {
         return $this->currentPageResolver->getCurrentPageWithForm([
             $this->createPage,

@@ -1,12 +1,14 @@
 <?php
 
-/**
+/*
  * This file was created by the developers from BitBag.
  * Feel free to contact us once you face any issues or want to start
  * another great project.
  * You can find more information about us on https://bitbag.shop and write us
- * an email on kontakt@bitbag.pl.
- */
+ * an email on mikolaj.krol@bitbag.pl.
+*/
+
+declare(strict_types=1);
 
 namespace spec\BitBag\SyliusDhl24PlShippingExportPlugin\Api;
 
@@ -24,19 +26,15 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 
-/**
- * @author Patryk Drapik <patryk.drapik@bitbag.pl>
- */
 final class WebClientSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    function it_is_initializable(): void
     {
         $this->shouldHaveType(WebClient::class);
         $this->shouldHaveType(WebClientInterface::class);
     }
 
-    function it_create_request_data_shipment
-    (
+    function it_create_request_data_shipment(
         ShippingGatewayInterface $shippingGateway,
         OrderInterface $order,
         ShipmentInterface $shipment,
@@ -46,8 +44,7 @@ final class WebClientSpec extends ObjectBehavior
         PaymentMethod $paymentMethod,
         AddressInterface $address,
         TaxonInterface $taxon
-    )
-    {
+    ): void {
         $shippingGateway->getConfigValue('wsdl')->willReturn('https://sandbox.dhl24.com.pl/webapi2');
         $shippingGateway->getConfigValue('login')->willReturn('123');
         $shippingGateway->getConfigValue('password')->willReturn('123');

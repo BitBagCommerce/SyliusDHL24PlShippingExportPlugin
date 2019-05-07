@@ -1,12 +1,14 @@
 <?php
 
-/**
+/*
  * This file was created by the developers from BitBag.
  * Feel free to contact us once you face any issues or want to start
  * another great project.
  * You can find more information about us on https://bitbag.shop and write us
- * an email on kontakt@bitbag.pl.
+ * an email on mikolaj.krol@bitbag.pl.
  */
+
+declare(strict_types=1);
 
 namespace BitBag\SyliusDhl24PlShippingExportPlugin\EventListener;
 
@@ -14,35 +16,24 @@ use BitBag\SyliusDhl24PlShippingExportPlugin\Api\SoapClientInterface;
 use BitBag\SyliusDhl24PlShippingExportPlugin\Api\WebClientInterface;
 use BitBag\SyliusShippingExportPlugin\Event\ExportShipmentEvent;
 
-/**
- * @author Mikołaj Król <mikolaj.krol@bitbag.pl>
- */
 final class ShippingExportEventListener
 {
     const DHL_GATEWAY_CODE = 'dhl24_pl';
     const BASE_LABEL_EXTENSION = 'pdf';
 
-    /**
-     * @var WebClientInterface
-     */
+    /** @var WebClientInterface */
     private $webClient;
 
+    /** @var SoapClientInterface */
     private $soapClient;
 
-    /**
-     * @param WebClientInterface $webClient
-     * @param SoapClientInterface $soapClient
-     */
     public function __construct(WebClientInterface $webClient, SoapClientInterface $soapClient)
     {
         $this->webClient = $webClient;
         $this->soapClient = $soapClient;
     }
 
-    /**
-     * @param ExportShipmentEvent $exportShipmentEvent
-     */
-    public function exportShipment(ExportShipmentEvent $exportShipmentEvent)
+    public function exportShipment(ExportShipmentEvent $exportShipmentEvent): void
     {
         $shippingExport = $exportShipmentEvent->getShippingExport();
         $shippingGateway = $shippingExport->getShippingGateway();
@@ -61,7 +52,7 @@ final class ShippingExportEventListener
             $response = $this->soapClient->createShipment($requestData, $shippingGateway->getConfigValue('wsdl'));
         } catch (\Exception $exception) {
             $exportShipmentEvent->addErrorFlash(sprintf(
-                "DHL24 Web Service for #%s order: %s",
+                'DHL24 Web Service for #%s order: %s',
                 $shipment->getOrder()->getNumber(),
                 $exception->getMessage()));
 
@@ -71,7 +62,7 @@ final class ShippingExportEventListener
         $labelContent = base64_decode($response->createShipmentResult->label->labelContent);
         $extension = self::BASE_LABEL_EXTENSION;
 
-        if ($response->createShipmentResult->label->labelType === 'ZBLP') {
+        if ('ZBLP' === $response->createShipmentResult->label->labelType) {
             $extension = 'zpl';
         }
 

@@ -1,12 +1,14 @@
 <?php
 
-/**
+/*
  * This file was created by the developers from BitBag.
  * Feel free to contact us once you face any issues or want to start
  * another great project.
  * You can find more information about us on https://bitbag.shop and write us
- * an email on kontakt@bitbag.pl.
+ * an email on mikolaj.krol@bitbag.pl.
  */
+
+declare(strict_types=1);
 
 namespace BitBag\SyliusDhl24PlShippingExportPlugin\Api;
 
@@ -17,44 +19,27 @@ use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\ShipmentInterface;
 use Webmozart\Assert\Assert;
 
-/**
- * @author Mikołaj Król <mikolaj.krol@bitbag.pl>
- * @author Damian Murawski <damian.murawski@bitbag.pl>
- */
 final class WebClient implements WebClientInterface
 {
-    const DATE_FORMAT = 'Y-m-d';
+    public const DATE_FORMAT = 'Y-m-d';
 
-    /**
-     * @var ShippingGatewayInterface
-     */
+    /** @var ShippingGatewayInterface */
     private $shippingGateway;
 
-    /**
-     * @var ShipmentInterface
-     */
+    /** @var ShipmentInterface */
     private $shipment;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setShippingGateway(ShippingGatewayInterface $shippingGateway)
+    public function setShippingGateway(ShippingGatewayInterface $shippingGateway): void
     {
         $this->shippingGateway = $shippingGateway;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setShipment(ShipmentInterface $shipment)
+    public function setShipment(ShipmentInterface $shipment): void
     {
         $this->shipment = $shipment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRequestData()
+    public function getRequestData(): array
     {
         return [
             'authData' => $this->getAuthData(),
@@ -67,18 +52,12 @@ final class WebClient implements WebClientInterface
         ];
     }
 
-    /**
-     * @return OrderInterface|\Sylius\Component\Order\Model\OrderInterface
-     */
-    private function getOrder()
+    private function getOrder(): OrderInterface
     {
         return $this->shipment->getOrder();
     }
 
-    /**
-     * @return array
-     */
-    private function getAuthData()
+    private function getAuthData(): array
     {
         return [
             'username' => $this->shippingGateway->getConfigValue('login'),
@@ -86,34 +65,27 @@ final class WebClient implements WebClientInterface
         ];
     }
 
-    /**
-     * @return string
-     */
-    private function getContent()
+    private function getContent(): string
     {
-        $content = "";
+        $content = '';
 
         /** @var OrderItemInterface $item */
         foreach ($this->getOrder()->getItems() as $item) {
-
             $mainTaxon = $item->getProduct()->getMainTaxon();
 
             if ($mainTaxon !== null) {
                 if (stristr($content, $mainTaxon->getName()) === false) {
-                    $content .= $mainTaxon->getName() . ", ";
+                    $content .= $mainTaxon->getName() . ', ';
                 }
             }
         }
 
-        $content = rtrim($content, ", ");
+        $content = rtrim($content, ', ');
 
         return substr($content, 0, 30);
     }
 
-    /**
-     * @return array
-     */
-    private function getShipmentInfo()
+    private function getShipmentInfo(): array
     {
         $shipmentInfo = [
             'dropOffType' => $this->getShippingGatewayConfig('drop_off_type'),
@@ -138,13 +110,10 @@ final class WebClient implements WebClientInterface
         return $shipmentInfo;
     }
 
-    /**
-     * @return array
-     */
-    private function getPieceList()
+    private function getPieceList(): array
     {
         $weight = $this->shipment->getShippingWeight();
-        Assert::greaterThan($weight, 0, sprintf("Shipment weight must be greater than %d.", 0));
+        Assert::greaterThan($weight, 0, sprintf('Shipment weight must be greater than %d.', 0));
 
         return [
             [
@@ -158,10 +127,7 @@ final class WebClient implements WebClientInterface
         ];
     }
 
-    /**
-     * @return array
-     */
-    private function getShip()
+    private function getShip(): array
     {
         $shippingAddress = $this->getOrder()->getShippingAddress();
 
@@ -187,55 +153,44 @@ final class WebClient implements WebClientInterface
                     'street' => $shippingAddress->getStreet(),
                     'phoneNumber' => $shippingAddress->getPhoneNumber(),
                 ],
-            ]
+            ],
         ];
     }
 
-    /**
-     * @param AddressInterface $address
-     *
-     * @return string
-     */
-    private function resolveHouseNumber(AddressInterface $address)
+    private function resolveHouseNumber(AddressInterface $address): string
     {
         $street = $address->getStreet();
-        $streetParts = explode(" ", $street);
+        $streetParts = explode(' ', $street);
 
         Assert::greaterThan(count($streetParts), 0, sprintf(
-            "Street \"%s\" is invalid. The street format must be something like %s, where %d is the house number.",
+            'Street "%s" is invalid. The street format must be something like %s, where %d is the house number.',
             $street,
-            "\"Opolska 45\"",
+            '"Opolska 45"',
             45
         ));
 
         return end($streetParts);
     }
 
-    /**
-     * @return boolean
-     */
-    private function isCashOnDelivery()
+    private function isCashOnDelivery(): bool
     {
         $codPaymentMethodCode = $this->getShippingGatewayConfig('cod_payment_method_code');
         $payments = $this->getOrder()->getPayments();
 
         foreach ($payments as $payment) {
-            return $payment->getMethod()->getCode() === $codPaymentMethodCode;
+            return $codPaymentMethodCode === $payment->getMethod()->getCode();
         }
 
         return false;
     }
 
-    /**
-     * @return string
-     */
-    private function resolvePickupDate()
+    private function resolvePickupDate(): string
     {
         $now = new \DateTime();
         $breakingHour = $this->getShippingGatewayConfig('pickup_breaking_hour');
 
-        if (null !== $breakingHour && $now->format('H') >= (int)$breakingHour) {
-            $tomorrow = $now->modify("+1 day");
+        if (null !== $breakingHour && $now->format('H') >= (int) $breakingHour) {
+            $tomorrow = $now->modify('+1 day');
 
             return $this->resolveWeekend($tomorrow)->format(self::DATE_FORMAT);
         }
@@ -243,32 +198,22 @@ final class WebClient implements WebClientInterface
         return $this->resolveWeekend($now)->format(self::DATE_FORMAT);
     }
 
-    /**
-     * @param \DateTime $date
-     *
-     * @return \DateTime
-     */
-    private function resolveWeekend(\DateTime $date)
+    private function resolveWeekend(\DateTime $date): \DateTime
     {
-        $dayOfWeek = (int)$date->format('N');
+        $dayOfWeek = (int) $date->format('N');
 
         if ($dayOfWeek === 6) {
-
-            return $date->modify("+2 days");
+            return $date->modify('+2 days');
         }
 
         if ($dayOfWeek === 7) {
-
-            return $date->modify("+1 day");
+            return $date->modify('+1 day');
         }
 
         return $date;
     }
 
-    /**
-     * @return array
-     */
-    private function resolveSpecialServices()
+    private function resolveSpecialServices(): array
     {
         $collectOnDeliveryValue = number_format($this->getOrder()->getTotal(), 2, '.', '');
 
@@ -278,12 +223,7 @@ final class WebClient implements WebClientInterface
         ];
     }
 
-    /**
-     * @param $config
-     *
-     * @return string
-     */
-    private function getShippingGatewayConfig($config)
+    private function getShippingGatewayConfig($config): string
     {
         return $this->shippingGateway->getConfigValue($config);
     }
