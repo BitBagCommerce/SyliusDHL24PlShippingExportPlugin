@@ -34,7 +34,7 @@ final class WebClientSpec extends ObjectBehavior
         $this->shouldHaveType(WebClientInterface::class);
     }
 
-    function it_create_request_data_shipment(
+    function it_creates_request_data_shipment(
         ShippingGatewayInterface $shippingGateway,
         OrderInterface $order,
         ShipmentInterface $shipment,

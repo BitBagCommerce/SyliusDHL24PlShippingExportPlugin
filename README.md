@@ -1,52 +1,81 @@
-![BitBag](https://bitbag.pl/static/bitbag-logo.png)
+<h1 align="center">
+    <a href="http://bitbag.shop" target="_blank">
+        <img src="doc/logo.jpeg" width="55%" />
+    </a>
+    <br />
+    <a href="https://packagist.org/packages/bitbag/dhl24pl-plugin" title="License" target="_blank">
+        <img src="https://img.shields.io/packagist/l/bitbag/dhl24pl-plugin.svg" />
+    </a>
+    <a href="https://packagist.org/packages/bitbag/dhl24pl-plugin" title="Version" target="_blank">
+        <img src="https://img.shields.io/packagist/v/bitbag/dhl24pl-plugin.svg" />
+    </a>
+    <a href="http://travis-ci.org/BitBagCommerce/SyliusDhl24PlPlugin" title="Build status" target="_blank">
+            <img src="https://img.shields.io/travis/BitBagCommerce/SyliusDhl24PlPlugin/master.svg" />
+        </a>
+    <a href="https://scrutinizer-ci.com/g/BitBagCommerce/SyliusDhl24PlPlugin/" title="Scrutinizer" target="_blank">
+        <img src="https://img.shields.io/scrutinizer/g/BitBagCommerce/SyliusDhl24PlPlugin.svg" />
+    </a>
+    <a href="https://packagist.org/packages/bitbag/dhl24pl-plugin" title="Total Downloads" target="_blank">
+        <img src="https://poser.pugx.org/bitbag/dhl24pl-plugin/downloads" />
+    </a>
+    <p>
+        <img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="85">
+    </p>
+</h1>
 
 ## Overview
 
-This plugin was made on top of our ShippingExport abstraction layer and it's goal is to allow DHL24PL Shipments to be exported to external web API in Sylius platform based apps. Each time new shipment for configured DHL gateway is placed you will see new shipment in the shipping export tab.
+This plugin was made on top of our ShippingExport abstraction layer. It's goal is to allow exporting DHL24PL shipments to external 
+web API in Sylius platform based apps. Each time new shipment for a configured 
+DHL gateway is placed you will see a new shipment in the shipping export tab.
 
 ## Support
 
-We work on amazing eCommerce projects on top of Sylius and Pimcore. Need some help or additional resources for a project?
-Write us an email on mikolaj.krol@bitbag.pl or visit [our website](https://bitbag.shop/)! :rocket:
+We work on amazing eCommerce projects on top of Sylius and other great Symfony based solutions, like eZ Platform, Akeneo or Pimcore.
+Need some help or additional resources for a project? Write us an email on mikolaj.krol@bitbag.pl or visit
+[our website](https://bitbag.shop/)! :rocket:
 
 ## Demo
 
 We created a demo app with some useful use-cases of the plugin! Visit [demo.bitbag.shop](https://demo.bitbag.shop) to take a look at it. 
-The admin can be accessed under [demo.bitbag.shop/admin](https://demo.bitbag.shop/admin) link and `sylius: sylius` credentials.
-
-## Installation
 
 ```bash
-$ composer require bitbag/dhl24-pl-shipping-export-plugin
-
+$ composer require bitbag/dhl24pl-plugin
 ```
-    
-Add plugin dependencies to your AppKernel.php file:
 
+Add plugin dependencies to your `config/bundles.php` file:
 ```php
-public function registerBundles()
-{
-    return array_merge(parent::registerBundles(), [
-        ...
-        
-        new BitBag\SyliusDhl24PlShippingExportPlugin\Dhl24PlShippingExportPlugin(),
-    ]);
-}
+return [
+    ...
+
+    BitBag\SyliusDhl24PlPlugin\BitBagSyliusDhl24PlPlugin::class => ['all' => true],
+];
+```
+
+## Customization
+
+### Available services you can [decorate](https://symfony.com/doc/current/service_container/service_decoration.html) and forms you can [extend](http://symfony.com/doc/current/form/create_form_type_extension.html)
+
+Run the below command to see what Symfony services are shared with this plugin:
+```bash
+$ bin/console debug:container bitbag_sylius_dhl24pl_plugin
 ```
 
 ## Testing
-
 ```bash
-$ wget http://getcomposer.org/composer.phar
-$ php composer.phar install
+$ composer install
+$ cd tests/Application
 $ yarn install
 $ yarn run gulp
-$ php bin/console sylius:install --env test
-$ php bin/console server:start --env test
-$ open http://localhost:8000
-$ bin/behat features/*
+$ bin/console assets:install -e test
+$ bin/console doctrine:database:create -e test
+$ bin/console doctrine:schema:create -e test
+$ bin/console server:run 127.0.0.1:8080 -e test
+$ open http://localhost:8080
+$ bin/behat
 $ bin/phpspec run
 ```
+
 ## Contribution
 
-Learn more about our contribution workflow on http://docs.sylius.org/en/latest/contributing/
+Learn more about our contribution workflow on http://docs.sylius.org/en/latest/contributing/.

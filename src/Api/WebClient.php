@@ -223,7 +223,7 @@ final class WebClient implements WebClientInterface
         ];
     }
 
-    private function getShippingGatewayConfig($config): string
+    private function getShippingGatewayConfig($config)
     {
         return $this->shippingGateway->getConfigValue($config);
     }
