@@ -16,7 +16,7 @@
         <img src="https://img.shields.io/scrutinizer/g/BitBagCommerce/SyliusDHL24PlShippingExportPlugin.svg" />
     </a>
     <a href="https://packagist.org/packages/bitbag/dhl24-pl-shipping-export-plugin" title="Total Downloads" target="_blank">
-        <img src="https://poser.pugx.org/bitbag/dhl24-pl-shipping-export-plugin.svg" />
+        <img src="https://poser.pugx.org/bitbag/dhl24-pl-shipping-export-plugin/downloads" />
     </a>
     <p>
         <img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="85">
