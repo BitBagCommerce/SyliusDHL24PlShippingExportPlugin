@@ -13,7 +13,7 @@
             <img src="https://img.shields.io/travis/BitBagCommerce/SyliusDHL24PlShippingExportPlugin/master.svg" />
         </a>
     <a href="https://scrutinizer-ci.com/g/BitBagCommerce/SyliusDHL24PlShippingExportPlugin/" title="Scrutinizer" target="_blank">
-        <img src="https://img.shields.io/scrutinizer/g/BitBagCommerce/SyliusDHL24PlShippingExportPlugin.svg" />
+        <img src="https://img.shields.io/scrutinizer/quality/g/BitBagCommerce/SyliusDhl24PlShippingExportPlugin.svg" />
     </a>
     <a href="https://packagist.org/packages/bitbag/dhl24-pl-shipping-export-plugin" title="Total Downloads" target="_blank">
         <img src="https://poser.pugx.org/bitbag/dhl24-pl-shipping-export-plugin/downloads" />
