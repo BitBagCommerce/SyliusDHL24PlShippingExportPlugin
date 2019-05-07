@@ -1,5 +1,5 @@
 {
-    "name": "bitbag/dhl24-pl-shipping-export-plugin",
+    "name": "bitbag/dhl24pl-shipping-export-plugin",
     "type": "sylius-plugin",
     "description": "DHL24 PL shipping export plugin for Sylius based applications.",
     "license": "MIT",
