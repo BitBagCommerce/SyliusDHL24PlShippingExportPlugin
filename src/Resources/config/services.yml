@@ -3,12 +3,12 @@ parameters:
 
 services:
     bitbag.dhl24_pl_shipping_export_plugin.form.type.dhl_shipping_gateway:
-        class: BitBag\Dhl24PlShippingExportPlugin\Form\Type\ShippingGatewayType
+        class: BitBag\SyliusDhl24PlShippingExportPlugin\Form\Type\ShippingGatewayType
         tags:
             - { name: bitbag.shipping_gateway_configuration_type, type: 'dhl24_pl', label: "DHL24 PL" }
 
     bitbag.dhl24_pl_shipping_export_plugin.event_listener.dhl_shipping_export:
-        class: BitBag\Dhl24PlShippingExportPlugin\EventListener\ShippingExportEventListener
+        class: BitBag\SyliusDhl24PlShippingExportPlugin\EventListener\ShippingExportEventListener
         arguments:
             - '@bitbag.dhl24_pl_shipping_export_plugin.api.web_client'
             - '@bitbag.dhl24_pl_shipping_export_plugin.api.soap_client'
@@ -16,7 +16,7 @@ services:
             - { name: kernel.event_listener, event: 'bitbag.export_shipment', method: exportShipment }
 
     bitbag.dhl24_pl_shipping_export_plugin.api.web_client:
-        class: BitBag\Dhl24PlShippingExportPlugin\Api\WebClient
+        class: BitBag\SyliusDhl24PlShippingExportPlugin\Api\WebClient
 
     bitbag.dhl24_pl_shipping_export_plugin.api.soap_client:
-        class: BitBag\Dhl24PlShippingExportPlugin\Api\SoapClient
+        class: BitBag\SyliusDhl24PlShippingExportPlugin\Api\SoapClient

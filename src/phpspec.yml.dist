@@ -1,4 +1,0 @@
-suites:
-    main:
-        namespace: BitBag\Dhl24PlShippingExportPlugin
-        psr4_prefix: BitBag\Dhl24PlShippingExportPlugin

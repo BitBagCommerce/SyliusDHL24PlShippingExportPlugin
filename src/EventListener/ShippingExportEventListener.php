@@ -8,10 +8,10 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace BitBag\Dhl24PlShippingExportPlugin\EventListener;
+namespace BitBag\SyliusDhl24PlShippingExportPlugin\EventListener;
 
-use BitBag\Dhl24PlShippingExportPlugin\Api\SoapClientInterface;
-use BitBag\Dhl24PlShippingExportPlugin\Api\WebClientInterface;
+use BitBag\SyliusDhl24PlShippingExportPlugin\Api\SoapClientInterface;
+use BitBag\SyliusDhl24PlShippingExportPlugin\Api\WebClientInterface;
 use BitBag\SyliusShippingExportPlugin\Event\ExportShipmentEvent;
 
 /**

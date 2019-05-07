@@ -8,7 +8,7 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace Tests\BitBag\Dhl24PlShippingExportPlugin\Behat\Context\Setup;
+namespace Tests\BitBag\SyliusDhl24PlShippingExportPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;

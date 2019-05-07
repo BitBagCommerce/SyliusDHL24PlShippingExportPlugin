@@ -8,9 +8,9 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace Tests\BitBag\Dhl24PlShippingExportPlugin\Behat\Mocker;
+namespace Tests\BitBag\SyliusDhl24PlShippingExportPlugin\Behat\Mocker;
 
-use BitBag\Dhl24PlShippingExportPlugin\Api\SoapClientInterface;
+use BitBag\SyliusDhl24PlShippingExportPlugin\Api\SoapClientInterface;
 use Sylius\Behat\Service\Mocker\MockerInterface;
 
 /**

@@ -8,10 +8,10 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace Tests\BitBag\Dhl24PlShippingExportPlugin\Behat\Context\Ui\Admin;
+namespace Tests\BitBag\SyliusDhl24PlShippingExportPlugin\Behat\Context\Ui\Admin;
 
 use Behat\Behat\Context\Context;
-use Tests\BitBag\Dhl24PlShippingExportPlugin\Behat\Mocker\DHLApiMocker;
+use Tests\BitBag\SyliusDhl24PlShippingExportPlugin\Behat\Mocker\DHLApiMocker;
 use Tests\BitBag\SyliusShippingExportPlugin\Behat\Page\Admin\ShippingExport\IndexPageInterface;
 
 /**

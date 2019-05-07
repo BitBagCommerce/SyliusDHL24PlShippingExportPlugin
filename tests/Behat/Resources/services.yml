@@ -1,0 +1,3 @@
+imports:
+    - { resource: "services/**/*.yml" }
+    - { resource: "../../../vendor/bitbag/shipping-export-plugin/tests/Behat/Resources/services.yml" }

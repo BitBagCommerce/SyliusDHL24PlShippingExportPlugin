@@ -8,7 +8,7 @@
  * an email on kontakt@bitbag.pl.
  */
 
-namespace Tests\BitBag\Dhl24PlShippingExportPlugin\Behat\Page\Admin\ShippingGateway;
+namespace Tests\BitBag\SyliusDhl24PlShippingExportPlugin\Behat\Page\Admin\ShippingGateway;
 
 use Sylius\Behat\Page\Admin\Crud\CreatePageInterface as BaseCreatePageInterface;
 

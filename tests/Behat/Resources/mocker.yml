@@ -1,5 +1,0 @@
-services:
-    bitbag.dhl24_pl_shipping_export_plugin.behat.mocker.dhl_api_mocker:
-        class: Tests\BitBag\Dhl24PlShippingExportPlugin\Behat\Mocker\DHLApiMocker
-        arguments:
-            - '@sylius.behat.mocker'

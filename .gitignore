@@ -1,11 +1,13 @@
-/bin/*
-!/bin/.gitkeep
-
 /vendor/
 /node_modules/
-/.idea
+/composer.lock
 
 /etc/build/*
-!/etc/build/.gitkeep
+!/etc/build/.gitignore
+
+/tests/Application/yarn.lock
+
+/behat.yml
+/phpspec.yml
 
 /tests/Application/shipping_labels/*

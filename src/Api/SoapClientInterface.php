@@ -1,6 +1,6 @@
 <?php
 
-namespace BitBag\Dhl24PlShippingExportPlugin\Api;
+namespace BitBag\SyliusDhl24PlShippingExportPlugin\Api;
 
 interface SoapClientInterface
 {
