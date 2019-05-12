@@ -40,7 +40,7 @@ Need some help or additional resources for a project? Write us an email on mikol
 We created a demo app with some useful use-cases of the plugin! Visit [demo.bitbag.shop](https://demo.bitbag.shop) to take a look at it. 
 
 ```bash
-$ composer require bitbag/dhl24pl-plugin
+$ composer require bitbag/dhl24-pl-shipping-export-plugin
 ```
 
 Add plugin dependencies to your `config/bundles.php` file:
