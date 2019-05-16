@@ -48,7 +48,7 @@ Add plugin dependencies to your `config/bundles.php` file:
 return [
     ...
 
-    BitBag\SyliusDhl24PlShippingExportPlugin\BitBagSyliusDhl24PlShippingExportPlugin::class => ['all' => true],
+    BitBag\SyliusDhl24PlShippingExportPlugin\BitBagDhl24PlShippingExportPlugin::class => ['all' => true],
 ];
 ```
 
