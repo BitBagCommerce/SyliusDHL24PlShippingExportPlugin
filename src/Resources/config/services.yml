@@ -10,10 +10,14 @@ services:
     bitbag.dhl24_pl_shipping_export_plugin.event_listener.dhl_shipping_export:
         class: BitBag\SyliusDhl24PlShippingExportPlugin\EventListener\ShippingExportEventListener
         arguments:
+            - '@session.flash_bag'
+            - '@filesystem'
+            - '@bitbag.manager.shipping_export'
+            - '%bitbag.shipping_labels_path%'
             - '@bitbag.dhl24_pl_shipping_export_plugin.api.web_client'
             - '@bitbag.dhl24_pl_shipping_export_plugin.api.soap_client'
         tags:
-            - { name: kernel.event_listener, event: 'bitbag.export_shipment', method: exportShipment }
+            - { name: kernel.event_listener, event: 'bitbag.shipping_export.export_shipment', method: exportShipment }
 
     bitbag.dhl24_pl_shipping_export_plugin.api.web_client:
         class: BitBag\SyliusDhl24PlShippingExportPlugin\Api\WebClient

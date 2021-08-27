@@ -12,8 +12,15 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusDhl24PlShippingExportPlugin\Api;
 
+
+use SoapFault;
+
 final class SoapClient implements SoapClientInterface
 {
+
+    /**
+     * @throws SoapFault
+     */
     public function createShipment(array $requestData, string $wsdl)
     {
         /** @var object $soapClient */
