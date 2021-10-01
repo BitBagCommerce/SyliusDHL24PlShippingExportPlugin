@@ -48,7 +48,6 @@ final class ShippingExportEventListener
         string $shippingLabelsPath,
         WebClientInterface $webClient,
         SoapClientInterface $soapClient
-
     ) {
         $this->flashBag = $flashBag;
         $this->filesystem = $filesystem;
@@ -145,5 +144,4 @@ final class ShippingExportEventListener
         $this->shippingExportManager->persist($shippingExport);
         $this->shippingExportManager->flush();
     }
-
 }
