@@ -1,4 +1,4 @@
-# [![](https://bitbag.io/wp-content/uploads/2021/01/CMS.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_cms)
+# [![](https://bitbag.io/wp-content/uploads/2021/10/SyliusDHL24PLShippingExportPlugin.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_dhl24)
 
 # BitBag SyliusDHL24PlShippingExportPlugin
 
@@ -22,7 +22,7 @@ Like what we do? Want to join us? Check out our job listings on our [career page
 * [Support](#we-are-here-to-help)
 * [About us](#about-us)
     * [Community](#community)
-* [Demo](#demo)
+* [Demo](#demo-sylius-shop)
 * [License](#license)
 * [Contact](#contact)
 
@@ -32,13 +32,54 @@ Like what we do? Want to join us? Check out our job listings on our [career page
 
 This plugin allows you to generate shipping labels for DHL24.
 
-- [Installation](doc/installation.md)
-- [Customization](doc/customization.md)
+- [Installation](#instalation)
+- [Customization](#customization)
 
 ## We are here to help
+
 This **open-source plugin was developed to help the Sylius community**. If you have any additional questions, would like help with installing or configuring the plugin, or need any assistance with your Sylius project - let us know!
 
 [![](https://bitbag.io/wp-content/uploads/2020/10/button-contact.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_cms)
+
+
+## Instalation
+
+***
+
+Run composer to install DHL24ShippingExportPlugin:
+
+```bash
+$ composer require bitbag/dhl24-pl-shipping-export-plugin
+```
+
+Add plugin dependencies to your `config/bundles.php` file:
+```php
+return [
+    ...
+
+    BitBag\SyliusDhl24PlShippingExportPlugin\BitBagDhl24PlShippingExportPlugin::class => ['all' => true],
+];
+```
+
+Add config file to your _sylius.yaml
+
+```yaml
+imports:
+...
+
+    - { resource: "@BitBagSyliusShippingExportPlugin/Resources/config/config.yml" }
+```
+
+## Customization
+
+***
+
+### Available services you can [decorate](https://symfony.com/doc/current/service_container/service_decoration.html) and forms you can [extend](http://symfony.com/doc/current/form/create_form_type_extension.html)
+
+Run the below command to see what Symfony services are shared with this plugin:
+```bash
+$ bin/console debug:container bitbag_sylius_dhl24pl_plugin
+```
 
 # About us
 
@@ -72,41 +113,6 @@ If you need some help with Sylius development, don't be hesitated to contact us 
 ---
 
 [![](https://bitbag.io/wp-content/uploads/2021/08/sylius-badges-transparent-wide.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_cms)
-
-## Instalation
-
-Run composer to install DHL24ShippingExportPlugin:
-
-```bash
-$ composer require bitbag/dhl24-pl-shipping-export-plugin
-```
-
-Add plugin dependencies to your `config/bundles.php` file:
-```php
-return [
-    ...
-
-    BitBag\SyliusDhl24PlShippingExportPlugin\BitBagDhl24PlShippingExportPlugin::class => ['all' => true],
-];
-```
-
-Add config file to your _sylius.yaml
-
-```yaml
-imports:
-...
-
-    - { resource: "@BitBagSyliusShippingExportPlugin/Resources/config/config.yml" }
-```
-
-## Customization
-
-### Available services you can [decorate](https://symfony.com/doc/current/service_container/service_decoration.html) and forms you can [extend](http://symfony.com/doc/current/form/create_form_type_extension.html)
-
-Run the below command to see what Symfony services are shared with this plugin:
-```bash
-$ bin/console debug:container bitbag_sylius_dhl24pl_plugin
-```
 
 
 ## Community
