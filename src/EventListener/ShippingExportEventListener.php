@@ -12,21 +12,16 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusDhl24PlShippingExportPlugin\EventListener;
 
-use BitBag\SyliusDhl24PlShippingExportPlugin\Api\SoapClientInterface;
-use BitBag\SyliusDhl24PlShippingExportPlugin\Api\WebClientInterface;
+use BitBag\SyliusDhl24PlShippingExportPlugin\Api\ShippingLabelFetcherInterface;
 use BitBag\SyliusShippingExportPlugin\Entity\ShippingExportInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Webmozart\Assert\Assert;
 
 final class ShippingExportEventListener
 {
-    const DHL_GATEWAY_CODE = 'dhl24_pl';
-
-    /** @var FlashBagInterface */
-    private $flashBag;
+    public const DHL_GATEWAY_CODE = 'dhl24_pl';
 
     /** @var Filesystem */
     private $filesystem;
@@ -37,26 +32,18 @@ final class ShippingExportEventListener
     /** @var string */
     private $shippingLabelsPath;
 
-    /** @var WebClientInterface */
-    private $webClient;
-
-    /** @var SoapClientInterface */
-    private $soapClient;
+    private ShippingLabelFetcherInterface $shippingLabelFetcher;
 
     public function __construct(
-        FlashBagInterface $flashBag,
         Filesystem $filesystem,
         ObjectManager $shippingExportManager,
         string $shippingLabelsPath,
-        WebClientInterface $webClient,
-        SoapClientInterface $soapClient
+        ShippingLabelFetcherInterface $shippingLabelFetcher
     ) {
-        $this->flashBag = $flashBag;
         $this->filesystem = $filesystem;
         $this->shippingExportManager = $shippingExportManager;
         $this->shippingLabelsPath = $shippingLabelsPath;
-        $this->webClient = $webClient;
-        $this->soapClient = $soapClient;
+        $this->shippingLabelFetcher = $shippingLabelFetcher;
     }
 
     public function exportShipment(ResourceControllerEvent $event): void
@@ -74,29 +61,12 @@ final class ShippingExportEventListener
 
         $shipment = $shippingExport->getShipment();
 
-        $this->webClient->setShippingGateway($shippingGateway);
-        $this->webClient->setShipment($shipment);
+        $this->shippingLabelFetcher->createShipment($shippingGateway, $shipment);
 
-        try {
-            $requestData = $this->webClient->getRequestData();
-
-            $response = $this->soapClient->createShipment($requestData, $shippingGateway->getConfigValue('wsdl'));
-        } catch (\Exception $exception) {
-            $this->flashBag->add(
-                'error',
-                sprintf(
-                    'DHL24 Web Service for #%s order: %s',
-                    $shipment->getOrder()->getNumber(),
-                    $exception->getMessage()
-                )
-            );
-
+        $labelContent = $this->shippingLabelFetcher->getLabelContent();
+        if (empty($labelContent)) {
             return;
         }
-
-        $labelContent = base64_decode($response->createShipmentResult->label->labelContent);
-
-        $this->flashBag->add('success', 'bitbag.ui.shipment_data_has_been_exported'); // Add success notification
         $this->saveShippingLabel($shippingExport, $labelContent, 'pdf'); // Save label
         $this->markShipmentAsExported($shippingExport); // Mark shipment as "Exported"
     }

@@ -7,15 +7,20 @@ services:
         tags:
             - { name: bitbag.shipping_gateway_configuration_type, type: 'dhl24_pl', label: "DHL24 PL" }
 
+    bitbag.dhl24_pl_shipping_export_plugin.api.shipping_label_fetcher:
+        class: BitBag\SyliusDhl24PlShippingExportPlugin\Api\ShippingLabelFetcher
+        arguments:
+            - '@session.flash_bag'
+            - '@bitbag.dhl24_pl_shipping_export_plugin.api.web_client'
+            - '@bitbag.dhl24_pl_shipping_export_plugin.api.soap_client'
+
     bitbag.dhl24_pl_shipping_export_plugin.event_listener.dhl_shipping_export:
         class: BitBag\SyliusDhl24PlShippingExportPlugin\EventListener\ShippingExportEventListener
         arguments:
-            - '@session.flash_bag'
             - '@filesystem'
             - '@bitbag.manager.shipping_export'
             - '%bitbag.shipping_labels_path%'
-            - '@bitbag.dhl24_pl_shipping_export_plugin.api.web_client'
-            - '@bitbag.dhl24_pl_shipping_export_plugin.api.soap_client'
+            - '@bitbag.dhl24_pl_shipping_export_plugin.api.shipping_label_fetcher'
         tags:
             - { name: kernel.event_listener, event: 'bitbag.shipping_export.export_shipment', method: exportShipment }
 
