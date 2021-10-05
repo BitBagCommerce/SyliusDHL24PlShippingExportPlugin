@@ -46,11 +46,7 @@
     "config": {
         "sort-packages": true
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.10-dev"
-        }
-    },
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "BitBag\\SyliusDhl24PlShippingExportPlugin\\": "src/",

@@ -23,6 +23,8 @@ use Webmozart\Assert\Assert;
 
 final class ShippingExportEventListener
 {
+    const DHL_GATEWAY_CODE = 'dhl24_pl';
+
     /** @var FlashBagInterface */
     private $flashBag;
 
@@ -66,7 +68,7 @@ final class ShippingExportEventListener
         $shippingGateway = $shippingExport->getShippingGateway();
         Assert::notNull($shippingGateway);
 
-        if ('dhl24_pl' !== $shippingGateway->getCode()) {
+        if (self::DHL_GATEWAY_CODE !== $shippingGateway->getCode()) {
             return;
         }
 
@@ -96,7 +98,7 @@ final class ShippingExportEventListener
 
         $this->flashBag->add('success', 'bitbag.ui.shipment_data_has_been_exported'); // Add success notification
         $this->saveShippingLabel($shippingExport, $labelContent, 'pdf'); // Save label
-        //$this->markShipmentAsExported($shippingExport); // Mark shipment as "Exported"
+        $this->markShipmentAsExported($shippingExport); // Mark shipment as "Exported"
     }
 
     public function saveShippingLabel(
