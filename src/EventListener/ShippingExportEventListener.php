@@ -14,6 +14,7 @@ namespace BitBag\SyliusDhl24PlShippingExportPlugin\EventListener;
 
 use BitBag\SyliusDhl24PlShippingExportPlugin\Api\ShippingLabelFetcherInterface;
 use BitBag\SyliusShippingExportPlugin\Entity\ShippingExportInterface;
+use BitBag\SyliusShippingExportPlugin\Repository\ShippingExportRepository;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Symfony\Component\Filesystem\Filesystem;
@@ -27,7 +28,7 @@ final class ShippingExportEventListener
     private $filesystem;
 
     /** @var ObjectManager */
-    private $shippingExportManager;
+    private $shippingExportRepository;
 
     /** @var string */
     private $shippingLabelsPath;
@@ -36,12 +37,12 @@ final class ShippingExportEventListener
 
     public function __construct(
         Filesystem $filesystem,
-        ObjectManager $shippingExportManager,
+        ShippingExportRepository $shippingExportRepository,
         string $shippingLabelsPath,
         ShippingLabelFetcherInterface $shippingLabelFetcher
     ) {
         $this->filesystem = $filesystem;
-        $this->shippingExportManager = $shippingExportManager;
+        $this->shippingExportRepository = $shippingExportRepository;
         $this->shippingLabelsPath = $shippingLabelsPath;
         $this->shippingLabelFetcher = $shippingLabelFetcher;
     }
@@ -83,8 +84,7 @@ final class ShippingExportEventListener
         $this->filesystem->dumpFile($labelPath, $labelContent);
         $shippingExport->setLabelPath($labelPath);
 
-        $this->shippingExportManager->persist($shippingExport);
-        $this->shippingExportManager->flush();
+        $this->shippingExportRepository->add($shippingExport);
     }
 
     private function getFilename(ShippingExportInterface $shippingExport): string
@@ -113,7 +113,6 @@ final class ShippingExportEventListener
         $shippingExport->setState(ShippingExportInterface::STATE_EXPORTED);
         $shippingExport->setExportedAt(new \DateTime());
 
-        $this->shippingExportManager->persist($shippingExport);
-        $this->shippingExportManager->flush();
+        $this->shippingExportRepository->add($shippingExport);
     }
 }

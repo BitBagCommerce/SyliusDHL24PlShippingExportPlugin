@@ -18,7 +18,7 @@ services:
         class: BitBag\SyliusDhl24PlShippingExportPlugin\EventListener\ShippingExportEventListener
         arguments:
             - '@filesystem'
-            - '@bitbag.manager.shipping_export'
+            - '@bitbag.repository.shipping_export'
             - '%bitbag.shipping_labels_path%'
             - '@bitbag.dhl24_pl_shipping_export_plugin.api.shipping_label_fetcher'
         tags:
