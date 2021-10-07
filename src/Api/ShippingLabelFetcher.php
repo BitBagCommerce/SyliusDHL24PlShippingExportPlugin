@@ -35,7 +35,7 @@ class ShippingLabelFetcher implements ShippingLabelFetcherInterface
             $requestData = $this->webClient->getRequestData();
 
             $this->response = $this->soapClient->createShipment($requestData, $shippingGateway->getConfigValue('wsdl'));
-        } catch (\Exception $exception) {
+        } catch (\SoapFault $exception) {
             $this->flashBag->add(
                 'error',
                 sprintf(
