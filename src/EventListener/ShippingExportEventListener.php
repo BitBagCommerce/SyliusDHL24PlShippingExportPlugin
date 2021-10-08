@@ -12,62 +12,107 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusDhl24PlShippingExportPlugin\EventListener;
 
-use BitBag\SyliusDhl24PlShippingExportPlugin\Api\SoapClientInterface;
-use BitBag\SyliusDhl24PlShippingExportPlugin\Api\WebClientInterface;
-use BitBag\SyliusShippingExportPlugin\Event\ExportShipmentEvent;
+use BitBag\SyliusDhl24PlShippingExportPlugin\Api\ShippingLabelFetcherInterface;
+use BitBag\SyliusShippingExportPlugin\Entity\ShippingExportInterface;
+use BitBag\SyliusShippingExportPlugin\Repository\ShippingExportRepository;
+use Doctrine\Persistence\ObjectManager;
+use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
+use Symfony\Component\Filesystem\Filesystem;
+use Webmozart\Assert\Assert;
 
 final class ShippingExportEventListener
 {
-    const DHL_GATEWAY_CODE = 'dhl24_pl';
-    const BASE_LABEL_EXTENSION = 'pdf';
+    public const DHL_GATEWAY_CODE = 'dhl24_pl';
 
-    /** @var WebClientInterface */
-    private $webClient;
+    /** @var Filesystem */
+    private $filesystem;
 
-    /** @var SoapClientInterface */
-    private $soapClient;
+    /** @var ObjectManager */
+    private $shippingExportRepository;
 
-    public function __construct(WebClientInterface $webClient, SoapClientInterface $soapClient)
-    {
-        $this->webClient = $webClient;
-        $this->soapClient = $soapClient;
+    /** @var string */
+    private $shippingLabelsPath;
+
+    private ShippingLabelFetcherInterface $shippingLabelFetcher;
+
+    public function __construct(
+        Filesystem $filesystem,
+        ShippingExportRepository $shippingExportRepository,
+        string $shippingLabelsPath,
+        ShippingLabelFetcherInterface $shippingLabelFetcher
+    ) {
+        $this->filesystem = $filesystem;
+        $this->shippingExportRepository = $shippingExportRepository;
+        $this->shippingLabelsPath = $shippingLabelsPath;
+        $this->shippingLabelFetcher = $shippingLabelFetcher;
     }
 
-    public function exportShipment(ExportShipmentEvent $exportShipmentEvent): void
+    public function exportShipment(ResourceControllerEvent $event): void
     {
-        $shippingExport = $exportShipmentEvent->getShippingExport();
-        $shippingGateway = $shippingExport->getShippingGateway();
+        /** @var ShippingExportInterface $shippingExport */
+        $shippingExport = $event->getSubject();
+        Assert::isInstanceOf($shippingExport, ShippingExportInterface::class);
 
-        if ($shippingGateway->getCode() !== self::DHL_GATEWAY_CODE) {
+        $shippingGateway = $shippingExport->getShippingGateway();
+        Assert::notNull($shippingGateway);
+
+        if (self::DHL_GATEWAY_CODE !== $shippingGateway->getCode()) {
             return;
         }
 
         $shipment = $shippingExport->getShipment();
-        $this->webClient->setShippingGateway($shippingGateway);
-        $this->webClient->setShipment($shipment);
 
-        try {
-            $requestData = $this->webClient->getRequestData();
+        $this->shippingLabelFetcher->createShipment($shippingGateway, $shipment);
 
-            $response = $this->soapClient->createShipment($requestData, $shippingGateway->getConfigValue('wsdl'));
-        } catch (\Exception $exception) {
-            $exportShipmentEvent->addErrorFlash(sprintf(
-                'DHL24 Web Service for #%s order: %s',
-                $shipment->getOrder()->getNumber(),
-                $exception->getMessage()));
-
+        $labelContent = $this->shippingLabelFetcher->getLabelContent();
+        if (empty($labelContent)) {
             return;
         }
+        $this->saveShippingLabel($shippingExport, $labelContent, 'pdf'); // Save label
+        $this->markShipmentAsExported($shippingExport); // Mark shipment as "Exported"
+    }
 
-        $labelContent = base64_decode($response->createShipmentResult->label->labelContent);
-        $extension = self::BASE_LABEL_EXTENSION;
+    public function saveShippingLabel(
+        ShippingExportInterface $shippingExport,
+        string $labelContent,
+        string $labelExtension
+    ): void {
+        $labelPath = $this->shippingLabelsPath
+            . '/' . $this->getFilename($shippingExport)
+            . '.' . $labelExtension;
 
-        if ('ZBLP' === $response->createShipmentResult->label->labelType) {
-            $extension = 'zpl';
-        }
+        $this->filesystem->dumpFile($labelPath, $labelContent);
+        $shippingExport->setLabelPath($labelPath);
 
-        $exportShipmentEvent->saveShippingLabel($labelContent, $extension);
-        $exportShipmentEvent->addSuccessFlash();
-        $exportShipmentEvent->exportShipment();
+        $this->shippingExportRepository->add($shippingExport);
+    }
+
+    private function getFilename(ShippingExportInterface $shippingExport): string
+    {
+        $shipment = $shippingExport->getShipment();
+        Assert::notNull($shipment);
+
+        $order = $shipment->getOrder();
+        Assert::notNull($order);
+
+        $orderNumber = $order->getNumber();
+
+        $shipmentId = $shipment->getId();
+
+        return implode(
+            '_',
+            [
+                $shipmentId,
+                preg_replace('~[^A-Za-z0-9]~', '', $orderNumber),
+            ]
+        );
+    }
+
+    private function markShipmentAsExported(ShippingExportInterface $shippingExport): void
+    {
+        $shippingExport->setState(ShippingExportInterface::STATE_EXPORTED);
+        $shippingExport->setExportedAt(new \DateTime());
+
+        $this->shippingExportRepository->add($shippingExport);
     }
 }
