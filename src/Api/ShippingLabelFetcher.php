@@ -28,10 +28,9 @@ class ShippingLabelFetcher implements ShippingLabelFetcherInterface
 
     public function createShipment($shippingGateway, $shipment): void
     {
-        $this->webClient->setShippingGateway($shippingGateway);
-        $this->webClient->setShipment($shipment);
-
         try {
+            $this->webClient->setShippingGateway($shippingGateway);
+            $this->webClient->setShipment($shipment);
             $requestData = $this->webClient->getRequestData();
 
             $this->response = $this->soapClient->createShipment($requestData, $shippingGateway->getConfigValue('wsdl'));
