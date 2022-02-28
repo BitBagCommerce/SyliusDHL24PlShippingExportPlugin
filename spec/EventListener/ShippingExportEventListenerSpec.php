@@ -12,15 +12,16 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusDhl24PlShippingExportPlugin\EventListener;
 
-use BitBag\SyliusDhl24PlShippingExportPlugin\Api\SoapClientInterface;
-use BitBag\SyliusDhl24PlShippingExportPlugin\Api\WebClientInterface;
+use BitBag\SyliusDhl24PlShippingExportPlugin\Api\ShippingLabelFetcherInterface;
 use BitBag\SyliusDhl24PlShippingExportPlugin\EventListener\ShippingExportEventListener;
 use BitBag\SyliusShippingExportPlugin\Entity\ShippingExportInterface;
 use BitBag\SyliusShippingExportPlugin\Entity\ShippingGatewayInterface;
-use BitBag\SyliusShippingExportPlugin\Event\ExportShipmentEvent;
+use BitBag\SyliusShippingExportPlugin\Repository\ShippingExportRepository;
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\Order;
+use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Component\Core\Model\ShipmentInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Webmozart\Assert\InvalidArgumentException;
 
 final class ShippingExportEventListenerSpec extends ObjectBehavior
 {
@@ -29,49 +30,72 @@ final class ShippingExportEventListenerSpec extends ObjectBehavior
         $this->shouldHaveType(ShippingExportEventListener::class);
     }
 
-    function let(WebClientInterface $webClient, SoapClientInterface $soapClient): void
+    function let(
+        Filesystem $filesystem,
+        ShippingExportRepository $shippingExportRepository,
+        ShippingLabelFetcherInterface $shippingLabelFetcher
+    ): void
     {
-        $this->beConstructedWith($webClient, $soapClient);
+        $this->beConstructedWith(
+            $filesystem,
+            $shippingExportRepository,
+            'shippingLabel',
+             $shippingLabelFetcher
+        );
     }
 
     function it_export_shipment(
-        ExportShipmentEvent $exportShipmentEvent,
+        ResourceControllerEvent $event,
         ShippingExportInterface $shippingExport,
         ShippingGatewayInterface $shippingGateway,
         ShipmentInterface $shipment,
-        WebClientInterface $webClient,
-        SoapClientInterface $soapClient,
-        Order $order
+        ShippingLabelFetcherInterface $shippingLabelFetcher,
+        ShippingExportEventListener $shippingExportEventListener
     ): void {
-        $webClient->setShippingGateway($shippingGateway);
+        $labelContent = 'labelContent';
+        $shippingGatewayCode = "'dhl24_pl'";
 
-        $shippingGateway->getCode()->willReturn(ShippingExportEventListener::DHL_GATEWAY_CODE);
-        $shippingGateway->getConfigValue('wsdl')->willReturn('wsdl');
+        $event->getSubject()
+            ->willReturn($shippingExport);
 
-        $webClient->getRequestData()->willReturn([]);
-        $webClient->setShippingGateway($shippingGateway)->shouldBeCalled();
-        $webClient->setShipment($shipment)->shouldBeCalled();
+        $shippingExport->getShippingGateway()
+            ->willReturn($shippingGateway);
 
-        $shippingExport->getShipment()->willReturn($shipment);
+        $shippingGateway->getCode()
+            ->willReturn($shippingGatewayCode);
 
-        $exportShipmentEvent->getShippingExport()->willReturn($shippingExport);
-        $exportShipmentEvent->addSuccessFlash()->shouldBeCalled();
-        $exportShipmentEvent->exportShipment()->shouldBeCalled();
-        $exportShipmentEvent->saveShippingLabel('', 'pdf')->shouldBeCalled();
-        $shippingExport->getShippingGateway()->willReturn($shippingGateway);
+        $shippingExport->getShipment()
+            ->willReturn($shipment);
 
-        $order->getNumber()->willReturn(1000);
-        $shipment->getOrder()->willReturn($order);
+        $shippingLabelFetcher->getLabelContent()
+            ->willReturn($labelContent);
 
-        $soapClient->createShipment([], 'wsdl')->willReturn(
-            (object) ['createShipmentResult' => (object) ['label' => (object) [
-                        'labelContent' => '',
-                        'labelType' => 't',
-                    ],
-                ],
-            ]
-        );
+        $this->exportShipment($event);
+    }
 
-        $this->exportShipment($exportShipmentEvent);
+    function it_throws_exception_if_given_wrong_instance(
+        ResourceControllerEvent $event,
+        ShippingGatewayInterface $shippingGateway
+    ): void {
+        $event->getSubject()
+            ->willReturn($shippingGateway);
+
+        $this->shouldThrow(InvalidArgumentException::class)
+            ->during('exportShipment', [$event]);
+    }
+
+    function it_throws_exception_if_shipping_gateway_is_null(
+        ResourceControllerEvent $event,
+        ShippingExportInterface $shippingExport
+    ): void {
+        $shippingGateway = null;
+        $event->getSubject()
+            ->willReturn($shippingExport);
+        
+        $shippingExport->getShippingGateway()
+            ->willReturn($shippingGateway);
+
+        $this->shouldThrow(InvalidArgumentException::class)
+            ->during('exportShipment', [$event]);
     }
 }
