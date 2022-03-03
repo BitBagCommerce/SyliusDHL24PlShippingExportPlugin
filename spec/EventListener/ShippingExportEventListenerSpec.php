@@ -44,7 +44,7 @@ final class ShippingExportEventListenerSpec extends ObjectBehavior
         );
     }
 
-    function it_export_shipment(
+    function it_exports_shipment(
         ResourceControllerEvent $event,
         ShippingExportInterface $shippingExport,
         ShippingGatewayInterface $shippingGateway,
