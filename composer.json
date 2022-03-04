@@ -61,7 +61,6 @@
         "symfony/routing": "4.1.8",
         "symfony/doctrine-bridge": "4.4.16"
     },
-    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "BitBag\\SyliusDhl24PlShippingExportPlugin\\": "src/",
