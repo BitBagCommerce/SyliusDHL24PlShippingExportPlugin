@@ -20,7 +20,7 @@ use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\Assert\Assert;
 
-final class ShippingExportEventListener
+class ShippingExportEventListener
 {
     public const DHL_GATEWAY_CODE = 'dhl24_pl';
 
