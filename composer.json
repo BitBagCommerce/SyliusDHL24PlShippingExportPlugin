@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "bitbag/shipping-export-plugin": "^1.5",
-        "sylius/sylius": "~1.9.0 || ~1.10.0",
+        "sylius/sylius": "~1.9.0 || ~1.10.0 || ~1.11.0",
       "ext-soap": "*"
     },
     "require-dev": {
@@ -41,7 +41,8 @@
         "symfony/dotenv": "^4.4 || ^5.2",
         "symfony/intl": "^4.4 || ^5.2",
         "symfony/web-profiler-bundle": "^4.4 || ^5.2",
-        "vimeo/psalm": "4.7.1"
+        "vimeo/psalm": "4.7.1",
+        "polishsymfonycommunity/symfony-mocker-container": "^1.0"
     },
     "config": {
         "sort-packages": true
