@@ -9,13 +9,14 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
-    name: "Sylius ${{ matrix.sylius}}, PHP ${{ matrix.php }}, MySQL ${{ matrix.mysql }}"
+    name: "Sylius ${{ matrix.sylius }}, Symfony ${{ matrix.symfony }}, PHP ${{ matrix.php }}, MySQL ${{ matrix.mysql }}"
 
     strategy:
       fail-fast: false
       matrix:
         php: [7.4, 8.0]
         node: [14.x]
+        symfony: [^4.4, ^5.2]
         sylius: [~1.9.0, ~1.10.0, ~1.11.0]
         mysql: [5.7, 8.0]
 
@@ -94,6 +95,13 @@ jobs:
           key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-php-${{ matrix.php }}-composer-
+
+      -
+        name: Restrict Symfony version
+        if: matrix.symfony != ''
+        run: |
+          composer global require --no-progress --no-scripts --no-plugins "symfony/flex:^1.10"
+          composer config extra.symfony.require "${{ matrix.symfony }}"
 
       -
         name: Restrict Sylius version
