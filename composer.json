@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "bitbag/shipping-export-plugin": "^1.5",
-        "sylius/sylius": "~1.9.0 || ~1.10.0",
+        "sylius/sylius": "~1.9.0 || ~1.10.0 || ~1.11.0",
       "ext-soap": "*"
     },
     "require-dev": {
@@ -41,12 +41,26 @@
         "symfony/dotenv": "^4.4 || ^5.2",
         "symfony/intl": "^4.4 || ^5.2",
         "symfony/web-profiler-bundle": "^4.4 || ^5.2",
-        "vimeo/psalm": "4.7.1"
+        "vimeo/psalm": "4.7.1",
+        "polishsymfonycommunity/symfony-mocker-container": "^1.0"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/thanks": true,
+            "composer/package-versions-deprecated": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
+        }
     },
-    "prefer-stable": true,
+    "conflict": {
+        "doctrine/dbal": "^3.0",
+        "symfony/symfony": "4.1.8",
+        "symfony/browser-kit": "4.1.8",
+        "symfony/dom-crawler": "4.1.8",
+        "symfony/routing": "4.1.8",
+        "symfony/doctrine-bridge": "4.4.16"
+    },
     "autoload": {
         "psr-4": {
             "BitBag\\SyliusDhl24PlShippingExportPlugin\\": "src/",
