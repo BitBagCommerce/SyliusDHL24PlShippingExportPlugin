@@ -23,8 +23,7 @@ class ShippingLabelFetcher implements ShippingLabelFetcherInterface
         FlashBagInterface $flashBag,
         WebClientInterface $webClient,
         SoapClientInterface $soapClient
-    )
-    {
+    ) {
         $this->flashBag = $flashBag;
         $this->webClient = $webClient;
         $this->soapClient = $soapClient;
