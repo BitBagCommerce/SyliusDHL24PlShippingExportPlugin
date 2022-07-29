@@ -19,8 +19,11 @@ class ShippingLabelFetcher implements ShippingLabelFetcherInterface
 
     private FlashBagInterface $flashBag;
 
-    public function __construct(FlashBagInterface $flashBag, WebClientInterface $webClient, SoapClientInterface $soapClient)
-    {
+    public function __construct(
+        FlashBagInterface $flashBag,
+        WebClientInterface $webClient,
+        SoapClientInterface $soapClient
+    ) {
         $this->flashBag = $flashBag;
         $this->webClient = $webClient;
         $this->soapClient = $soapClient;

@@ -73,8 +73,8 @@ final class WebClient implements WebClientInterface
         foreach ($this->getOrder()->getItems() as $item) {
             $mainTaxon = $item->getProduct()->getMainTaxon();
 
-            if ($mainTaxon !== null) {
-                if (stristr($content, $mainTaxon->getName()) === false) {
+            if (null !== $mainTaxon) {
+                if (false === stristr($content, $mainTaxon->getName())) {
                     $content .= $mainTaxon->getName() . ', ';
                 }
             }
@@ -202,11 +202,11 @@ final class WebClient implements WebClientInterface
     {
         $dayOfWeek = (int) $date->format('N');
 
-        if ($dayOfWeek === 6) {
+        if (6 === $dayOfWeek) {
             return $date->modify('+2 days');
         }
 
-        if ($dayOfWeek === 7) {
+        if (7 === $dayOfWeek) {
             return $date->modify('+1 day');
         }
 
