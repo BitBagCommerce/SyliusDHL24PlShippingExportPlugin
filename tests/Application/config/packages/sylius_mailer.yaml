@@ -1,0 +1,4 @@
+sylius_mailer:
+  sender:
+    name: Example
+    address: no-reply@example.com
