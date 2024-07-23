@@ -1,11 +1,10 @@
 <?php
 
 /*
- * This file was created by the developers from BitBag.
+ * This file has been created by developers from BitBag.
  * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
  */
 
 declare(strict_types=1);
@@ -166,7 +165,7 @@ final class WebClient implements WebClientInterface
             'Street "%s" is invalid. The street format must be something like %s, where %d is the house number.',
             $street,
             '"Opolska 45"',
-            45
+            45,
         ));
 
         return end($streetParts);
