@@ -4,27 +4,24 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusDhl24PlShippingExportPlugin\Api;
 
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ShippingLabelFetcher implements ShippingLabelFetcherInterface
 {
-    /** @var WebClientInterface */
-    private $webClient;
+    private WebClientInterface $webClient;
 
-    /** @var SoapClientInterface */
-    private $soapClient;
+    private SoapClientInterface $soapClient;
 
-    /** @var string */
-    private $response;
+    private string $response;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     public function __construct(
-        FlashBagInterface $flashBag,
-        WebClientInterface $webClient,
+        RequestStack        $requestStack,
+        WebClientInterface  $webClient,
         SoapClientInterface $soapClient
     ) {
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->webClient = $webClient;
         $this->soapClient = $soapClient;
     }
@@ -38,7 +35,7 @@ class ShippingLabelFetcher implements ShippingLabelFetcherInterface
 
             $this->response = $this->soapClient->createShipment($requestData, $shippingGateway->getConfigValue('wsdl'));
         } catch (\SoapFault $exception) {
-            $this->flashBag->add(
+            $this->requestStack->getSession()->getBag('flashes')->add(
                 'error',
                 sprintf(
                     'DHL24 Web Service for #%s order: %s',
@@ -57,7 +54,7 @@ class ShippingLabelFetcher implements ShippingLabelFetcherInterface
             return '';
         }
 
-        $this->flashBag->add('success', 'bitbag.ui.shipment_data_has_been_exported'); // Add success notification
+        $this->requestStack->getSession()->getBag('flashes')->add('success', 'bitbag.ui.shipment_data_has_been_exported'); // Add success notification
 
         return base64_decode($this->response->createShipmentResult->label->labelContent);
     }
