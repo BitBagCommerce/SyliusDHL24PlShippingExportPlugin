@@ -69,6 +69,11 @@ imports:
 
     - { resource: "@BitBagSyliusShippingExportPlugin/Resources/config/config.yml" }
 ```
+Finish the installation by updating the database schema:
+```bash
+bin/console doctrine:migrations:diff
+bin/console doctrine:migrations:migrate
+```
 
 ## Customization
 

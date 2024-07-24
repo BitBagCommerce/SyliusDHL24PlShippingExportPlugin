@@ -19,7 +19,7 @@ class ShippingLabelFetcher implements ShippingLabelFetcherInterface
 
     private SoapClientInterface $soapClient;
 
-    private string $response;
+    private object $response;
 
     private RequestStack $requestStack;
 
