@@ -1,11 +1,10 @@
 <?php
 
 /*
- * This file was created by the developers from BitBag.
+ * This file has been created by developers from BitBag.
  * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
  */
 
 declare(strict_types=1);
@@ -39,7 +38,7 @@ class ShippingExportEventListener
         Filesystem $filesystem,
         ShippingExportRepository $shippingExportRepository,
         string $shippingLabelsPath,
-        ShippingLabelFetcherInterface $shippingLabelFetcher
+        ShippingLabelFetcherInterface $shippingLabelFetcher,
     ) {
         $this->filesystem = $filesystem;
         $this->shippingExportRepository = $shippingExportRepository;
@@ -75,7 +74,7 @@ class ShippingExportEventListener
     public function saveShippingLabel(
         ShippingExportInterface $shippingExport,
         string $labelContent,
-        string $labelExtension
+        string $labelExtension,
     ): void {
         $labelPath = $this->shippingLabelsPath
             . '/' . $this->getFilename($shippingExport)
@@ -104,7 +103,7 @@ class ShippingExportEventListener
             [
                 $shipmentId,
                 preg_replace('~[^A-Za-z0-9]~', '', $orderNumber),
-            ]
+            ],
         );
     }
 
