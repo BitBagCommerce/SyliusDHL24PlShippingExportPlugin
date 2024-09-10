@@ -42,39 +42,24 @@ This **open-source plugin was developed to help the Sylius community**. If you h
 
 [![](https://bitbag.io/wp-content/uploads/2020/10/button-contact.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_cms)
 
+## Installation
+---
+### Requirements
 
-## Instalation
+We work on stable, supported and up-to-date versions of packages. We recommend you to do the same.
 
-***
+| Package       | Version         |
+|---------------|-----------------|
+| PHP           | \>=8.0          |
+| sylius/sylius | 1.12.x - 1.13.x |
+| MySQL         | \>= 5.7         |
+| NodeJS        | \>= 18.x        |
 
-Run composer to install DHL24ShippingExportPlugin:
+----
 
-```bash
-$ composer require bitbag/dhl24-pl-shipping-export-plugin
-```
+### Full installation guide
+- [See the full installation guide](doc/installation.md)
 
-Add plugin dependencies to your `config/bundles.php` file:
-```php
-return [
-    ...
-
-    BitBag\SyliusDhl24PlShippingExportPlugin\BitBagDhl24PlShippingExportPlugin::class => ['all' => true],
-];
-```
-
-Add config file to your _sylius.yaml
-
-```yaml
-imports:
-...
-
-    - { resource: "@BitBagSyliusShippingExportPlugin/Resources/config/config.yml" }
-```
-Finish the installation by updating the database schema:
-```bash
-bin/console doctrine:migrations:diff
-bin/console doctrine:migrations:migrate
-```
 
 ## Customization
 
