@@ -59,7 +59,7 @@ We have a 70-person team of experts: business analysts and consultants, eCommerc
 * [Demo](#demo)
 * [Additional resources for developers](#additional-resources-for-developers)
 * [License](#license)
-* [Contact](#contact)
+* [Contact and support](#contact-and-support)
 * [Community](#community)
 
 
@@ -131,7 +131,7 @@ This plugin's source code is completely free and released under the terms of the
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen.)
 
-# Contact
+# Contact and support
 ---
 This open-source plugin was developed to help the Sylius community. If you have any additional questions, would like help with installing or configuring the plugin, or need any assistance with your Sylius project - let us know! **Contact us** or send us an **e-mail to hello@bitbag.io** with your question(s).
 
