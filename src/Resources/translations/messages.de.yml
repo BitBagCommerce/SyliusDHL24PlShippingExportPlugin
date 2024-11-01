@@ -1,0 +1,51 @@
+bitbag:
+    ui:
+        dhl_wsdl: WSDL
+        dhl_login: Benutzername
+        dhl_password: Passwort
+        billing_account_number: Kundennummer
+        shipping_payment_type: Zahlungsart bestimmen
+        country: Land
+        name: Name (Vor- und Nachname oder Firmenname)
+        postal_code: Postleitzahl
+        city: Stadt
+        street: Straße
+        house_number: Hausnummer
+        phone_number: Telefonnummer
+        drop_off_type: Art der Anfrage
+        service_type: Art des Transportdienstes
+        label_type: Rücksendeschein auswählen
+        type: Art des Pakets
+        shipment_start_hour: Versandbeginn
+        shipment_end_hour: Versandende
+        pickup_breaking_hour: Abholfrist
+        package_width: Paketbreite
+        package_height: Pakethöhe
+        package_length: Paketlänge
+        cod_payment_method_code: Nachnahme-Zahlungsmethode
+        collect_on_deliveryForm: Form der Rücksendung im Nachnahme-Service
+        request_courier: Sendung erstellen und Kurier anfordern
+        courier_only: Nur Kurier bestellen
+        regular_pickup: Sendung ohne Einschränkungen erstellen
+        AH: Inlandssendung
+        domestic_09: Dienst Inland 09
+        domestic_12: Dienst Inland 12
+        EK: Sendung Connect
+        PI: Internationale Sendung
+        lp: Versandaufkleber
+        blp: BLP-Etikett im PDF-Format
+        lblp: BLP-Etikett im A4 PDF-Format
+        zblp: BLP-Etikett im Zebra-Druckerformat
+        package: Paket
+        envelope: Briefsendung
+        pallet: Palette
+        cod_cash: Barzahlung
+        cod_bank_transfer: Banküberweisung
+dhl:
+    ui:
+        payment_type: Zahlungsmethode
+        shipper: Absender
+        receiver: Empfänger
+        user: Dritte Partei
+        bank_transfer: Banküberweisung
+        cash: Barzahlung
